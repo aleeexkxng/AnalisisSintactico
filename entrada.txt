@@ -1,0 +1,4 @@
+variable_x =5;
+variable1 =;
+varf = 1.56;
+123varf1 = 2.55;
