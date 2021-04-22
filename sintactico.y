@@ -23,11 +23,18 @@
 %start lista_i;
 
 
-%token <real> NUMEROR
-%token <numero> NUMEROE
-%token <texto> IDENTIFICADOR
+%token <real>NUMEROR
+%token <numero>NUMEROE
+%token <texto>IDENTIFICADOR
+%token <texto>CADENA
+%token <texto>CHAR
 %token PARA
 %token PARC
+%token MAS
+%token MENOS
+%token POR
+%token ENTRE
+%token MODULO
 %token COMA
 %token IGUAL
 %token MAYOR
@@ -37,15 +44,27 @@
 %token LLAVEC
 %token PUNTOCOMA
 %token NO
+%token DOSPUNTOS
 %token MENOR
-
+%token <texto>OPERATOR
+%token <texto>INC_DEC
+%token <texto>OPERATOR_FLUJO_IN
+%token <texto>OPERATOR_FLUJO_OUT
 
 %type <texto>asignacion
 %type <texto>ciclo_for
 %type <texto>ciclo_while
 %type <texto>ciclo_dowhile
 %type <texto>comparacion
+%type <texto>cin
+%type <texto>cin_aux
+%type <texto>cout
+%type <texto>cout_aux
+%type <texto>switch
+%type <texto>switch_aux
 
+%type <texto>incremento_decremento
+%type <texto>incremento_decremento_for
 
 %%
 
@@ -58,15 +77,60 @@ i:			asignacion PUNTOCOMA
             |comparacion PUNTOCOMA
             |ciclo_while
             |ciclo_dowhile PUNTOCOMA
+	    |cin
+	    |cout
+	    |switch
+	    |incremento_decremento
 			|error PUNTOCOMA
 			;
-			
+
+cin_aux:	OPERATOR_FLUJO_IN IDENTIFICADOR cin_aux
+		| OPERATOR_FLUJO_IN IDENTIFICADOR
+		;
+
+cout_aux:	OPERATOR_FLUJO_OUT IDENTIFICADOR cout_aux
+		|OPERATOR_FLUJO_OUT CADENA cout_aux
+		|OPERATOR_FLUJO_OUT CHAR cout_aux
+		|OPERATOR_FLUJO_OUT NUMEROE cout_aux
+		|OPERATOR_FLUJO_OUT NUMEROR cout_aux
+		|OPERATOR_FLUJO_OUT IDENTIFICADOR
+		|OPERATOR_FLUJO_OUT NUMEROE
+		|OPERATOR_FLUJO_OUT NUMEROR
+		|OPERATOR_FLUJO_OUT CADENA
+		|OPERATOR_FLUJO_OUT CHAR
+		;
+
+switch_aux:	IDENTIFICADOR DOSPUNTOS switch_aux
+		|IDENTIFICADOR DOSPUNTOS
+		;
+
+switch:		IDENTIFICADOR PARA IDENTIFICADOR PARC switch_aux LLAVEA LLAVEC {printf("switch correcto\n");}
+		;
+
+cin: 		IDENTIFICADOR cin_aux PUNTOCOMA {printf("cin ejecutado correctamente\n");}
+		;
+
+cout: 		IDENTIFICADOR cout_aux PUNTOCOMA {printf("cout ejecutado correctamente\n");}
+		;
 
 asignacion:	    IDENTIFICADOR IGUAL NUMEROE  {printf(" Valor %d asignado coreectamente \n",$3);}
                 |IDENTIFICADOR  IGUAL IDENTIFICADOR {printf("Linea aceptada\n");}
 				|IDENTIFICADOR IGUAL NUMEROR  {printf(" Valor %1.0f asignado coreectamente\n",$3);}
-				|asignacion COMA
+			|IDENTIFICADOR IGUAL operaciones {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR MAS IGUAL IDENTIFICADOR {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR MENOS IGUAL NUMEROE {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR POR IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR ENTRE IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR MODULO IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR IGUAL CADENA {printf("Valor %s asiganado correctamente\n", $3);}
+			|IDENTIFICADOR IGUAL CHAR {printf("Valor %s asiganado correctamente\n", $3);}
 			;
+
+incremento_decremento:	IDENTIFICADOR INC_DEC PUNTOCOMA {printf("Decremento/incremento exito\n");}
+			;
+
+incremento_decremento_for: IDENTIFICADOR INC_DEC
+			   ;
 			
 comparacion:    IDENTIFICADOR IGUAL IGUAL IDENTIFICADOR {printf("Comparacion Exitosa\n");}
                 |IDENTIFICADOR IGUAL IGUAL NUMEROE {printf("Comparacion Exitosa\n");}
@@ -82,9 +146,9 @@ comparacion:    IDENTIFICADOR IGUAL IGUAL IDENTIFICADOR {printf("Comparacion Exi
                 |IDENTIFICADOR MENOR IDENTIFICADOR {printf("Comparacion Exitosa\n");}
                 ;
                 
-ciclo_for:      IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA asignacion PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
-                |IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA asignacion PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
-                |IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA asignacion PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
+ciclo_for:      IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
+                |IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
+                |IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
                 |IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
                 |IDENTIFICADOR PARA PUNTOCOMA PUNTOCOMA asignacion PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
                 |IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
@@ -98,7 +162,26 @@ ciclo_while:    IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC {printf("Ciclo
 ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC {printf("Ciclo Do-While Exitoso\n");}
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
-                
+
+numeros:	NUMEROE
+                |NUMEROR
+                |IDENTIFICADOR
+		;
+
+operaciones:    operando operador operando {printf("op aceptada \n");}
+		;
+
+operando:       numeros
+                |operando operador operando
+                |PARA operando operador operando PARC
+                ;
+operador:       MAS
+                |MENOS
+                |POR
+                |ENTRE
+                |MODULO
+                ;
+               
 %%
 /**********************
  * Codigo C Adicional *

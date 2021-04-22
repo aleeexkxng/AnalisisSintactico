@@ -1,9 +1,7 @@
-variable_x =5;
-variable1 =variabley;
-varf = 1.56;
-varf1 = 2.55;
-for(variable_x =5;variable_x>=6;variable_z =7){}
-xxx==4;
-var2!=varf;
-while(variY<0){}
-do{}while(equis==2);
+switch(x) case: {}
+xo=(5+(5+(5+5)));
+xo=(((5+5)+5)+5);
+x=5+5;
+x+=5;
+x++;
+
