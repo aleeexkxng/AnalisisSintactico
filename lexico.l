@@ -31,6 +31,8 @@ IDENTIFICADOR   {LETRA}+({LETRA}|{DIGITO}|"_")*
 "{" 	{return(LLAVEA);}
 "}" 	{return(LLAVEC);}
 ";" 	{return(PUNTOCOMA);}
+"|" 	{return(PIPE);}
+"&" 	{return(AMPERSAND);}
 "\n" 	{linea++;}
 [\t\r\f] {}
 " "		{}

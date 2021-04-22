@@ -38,6 +38,8 @@
 %token PUNTOCOMA
 %token NO
 %token MENOR
+%token PIPE
+%token AMPERSAND
 
 
 %type <texto>asignacion
@@ -45,6 +47,9 @@
 %type <texto>ciclo_while
 %type <texto>ciclo_dowhile
 %type <texto>comparacion
+%type <texto>condicion_if
+%type <texto>sino_else
+%type <texto>funcion
 
 
 %%
@@ -58,6 +63,9 @@ i:			asignacion PUNTOCOMA
             |comparacion PUNTOCOMA
             |ciclo_while
             |ciclo_dowhile PUNTOCOMA
+            |funcion
+            |condicion_if
+            |sino_else
 			|error PUNTOCOMA
 			;
 			
@@ -98,6 +106,24 @@ ciclo_while:    IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC {printf("Ciclo
 ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC {printf("Ciclo Do-While Exitoso\n");}
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
+                
+condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa");}
+                |IDENTIFICADOR PARA comparacion PIPE PIPE comparacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa");}
+                |IDENTIFICADOR PARA comparacion AMPERSAND AMPERSAND comparacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa");}
+                ;
+                
+sino_else:      IDENTIFICADOR LLAVEA LLAVEC {printf("Else exitoso");}
+                |IDENTIFICADOR  {printf("Else exitoso");}
+                ;
+                
+funcion:        IDENTIFICADOR IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa");}
+                |IDENTIFICADOR IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa");}
+                |IDENTIFICADOR PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa");}
+                ;
+
                 
 %%
 /**********************
