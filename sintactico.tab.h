@@ -55,7 +55,11 @@ extern int yydebug;
     MAYOR = 265,
     CORCHA = 266,
     CORCHC = 267,
-    PUNTOCOMA = 268
+    LLAVEA = 268,
+    LLAVEC = 269,
+    PUNTOCOMA = 270,
+    NO = 271,
+    MENOR = 272
   };
 #endif
 
@@ -70,7 +74,7 @@ union YYSTYPE
   int numero;
   char* texto;
 
-#line 74 "sintactico.tab.h" /* yacc.c:1909  */
+#line 78 "sintactico.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

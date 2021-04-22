@@ -23,9 +23,13 @@ IDENTIFICADOR   {LETRA}+({LETRA}|{DIGITO}|"_")*
 ")" 	{return(PARC);}
 "," 	{return(COMA);}
 "=" 	{return(IGUAL);}
+"!" 	{return(NO);}
+"<" 	{return(MENOR);}
 ">" 	{return(MAYOR);}
 "[" 	{return(CORCHA);}
 "]" 	{return(CORCHC);}
+"{" 	{return(LLAVEA);}
+"}" 	{return(LLAVEC);}
 ";" 	{return(PUNTOCOMA);}
 "\n" 	{linea++;}
 [\t\r\f] {}
