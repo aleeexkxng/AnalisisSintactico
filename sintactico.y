@@ -28,13 +28,11 @@
 %token <texto>IDENTIFICADOR
 %token <texto>CADENA
 %token <texto>CHAR
+%token <texto>OPERATION
+%token <texto>EQUALARITHMETIC_OPERATORS
+%token <texto>ARITHMETIC_OPERATOR
 %token PARA
 %token PARC
-%token MAS
-%token MENOS
-%token POR
-%token ENTRE
-%token MODULO
 %token COMA
 %token IGUAL
 %token MAYOR
@@ -72,7 +70,7 @@
 lista_i : 	lista_i i;
 			| i
 			;
-i:			asignacion PUNTOCOMA
+i:	    asignacion PUNTOCOMA
             |ciclo_for 
             |comparacion PUNTOCOMA
             |ciclo_while
@@ -116,12 +114,9 @@ cout: 		IDENTIFICADOR cout_aux PUNTOCOMA {printf("cout ejecutado correctamente\n
 asignacion:	    IDENTIFICADOR IGUAL NUMEROE  {printf(" Valor %d asignado coreectamente \n",$3);}
                 |IDENTIFICADOR  IGUAL IDENTIFICADOR {printf("Linea aceptada\n");}
 				|IDENTIFICADOR IGUAL NUMEROR  {printf(" Valor %1.0f asignado coreectamente\n",$3);}
-			|IDENTIFICADOR IGUAL operaciones {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR MAS IGUAL IDENTIFICADOR {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR MENOS IGUAL NUMEROE {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR POR IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR ENTRE IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR MODULO IGUAL NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR IGUAL OPERATION {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE {printf("Valor de operacion asiganado correctamente\n");}
+			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
 			|IDENTIFICADOR IGUAL CADENA {printf("Valor %s asiganado correctamente\n", $3);}
 			|IDENTIFICADOR IGUAL CHAR {printf("Valor %s asiganado correctamente\n", $3);}
 			;
@@ -163,25 +158,6 @@ ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC 
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
 
-numeros:	NUMEROE
-                |NUMEROR
-                |IDENTIFICADOR
-		;
-
-operaciones:    operando operador operando {printf("op aceptada \n");}
-		;
-
-operando:       numeros
-                |operando operador operando
-                |PARA operando operador operando PARC
-                ;
-operador:       MAS
-                |MENOS
-                |POR
-                |ENTRE
-                |MODULO
-                ;
-               
 %%
 /**********************
  * Codigo C Adicional *
