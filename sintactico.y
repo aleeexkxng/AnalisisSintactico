@@ -44,6 +44,8 @@
 %token NO
 %token DOSPUNTOS
 %token MENOR
+%token PIPE
+%token AMPERSAND
 %token <texto>OPERATOR
 %token <texto>INC_DEC
 %token <texto>OPERATOR_FLUJO_IN
@@ -63,6 +65,9 @@
 
 %type <texto>incremento_decremento
 %type <texto>incremento_decremento_for
+%type <texto>funcion
+%type <texto>condicion_if
+%type <texto>sino_else
 
 %%
 
@@ -75,10 +80,14 @@ i:	    asignacion PUNTOCOMA
             |comparacion PUNTOCOMA
             |ciclo_while
             |ciclo_dowhile PUNTOCOMA
-	    |cin
-	    |cout
-	    |switch
-	    |incremento_decremento
+            |cin
+            |cout
+            |switch
+            |incremento_decremento
+            |declaraciones PUNTOCOMA
+            |funcion
+            |condicion_if
+            |sino_else
 			|error PUNTOCOMA
 			;
 
@@ -150,12 +159,35 @@ ciclo_for:      IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA in
                 |IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA PARC LLAVEA LLAVEC  {printf("Ciclo for aceptado\n");}
                 ;
                 
-ciclo_while:    IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC {printf("Ciclo While Exitoso\n");}
-                |IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Ciclo While Exitoso\n");}
+ciclo_while:    IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC {printf("Instruccion Exitosa\n");}
+                |IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Instruccion Exitosa\n");}
                 ;
     
 ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC {printf("Ciclo Do-While Exitoso\n");}
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
+                ;
+                
+declaraciones:  IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE {printf("Declaración exitosa NUMERO entero\n");}
+		|IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
+		|IDENTIFICADOR IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
+		|IDENTIFICADOR IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
+	;
+	
+condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
+                |IDENTIFICADOR PARA comparacion PIPE PIPE comparacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
+                |IDENTIFICADOR PARA comparacion AMPERSAND AMPERSAND comparacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
+                ;
+                
+sino_else:      IDENTIFICADOR LLAVEA LLAVEC {printf("Else exitoso \n");}
+                |IDENTIFICADOR  {printf("Else exitoso \n");}
+                ;
+                
+funcion:        IDENTIFICADOR IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |IDENTIFICADOR IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |IDENTIFICADOR PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
                 ;
 
 %%

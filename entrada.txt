@@ -5,4 +5,11 @@ xo=(((5+5)+5)+5);
 x=5+5;
 x+=5;
 x++;
-
+int a= 0;
+do{}while(a<=11);
+string texto="este es un string";
+varX="mas texto";
+for(i=0;i<=10;i++){}
+if(a==0 && b<10){}
+int main(){}
+else{}

@@ -48,18 +48,30 @@ extern int yydebug;
     NUMEROR = 258,
     NUMEROE = 259,
     IDENTIFICADOR = 260,
-    PARA = 261,
-    PARC = 262,
-    COMA = 263,
-    IGUAL = 264,
-    MAYOR = 265,
-    CORCHA = 266,
-    CORCHC = 267,
-    LLAVEA = 268,
-    LLAVEC = 269,
-    PUNTOCOMA = 270,
-    NO = 271,
-    MENOR = 272
+    CADENA = 261,
+    CHAR = 262,
+    OPERATION = 263,
+    EQUALARITHMETIC_OPERATORS = 264,
+    ARITHMETIC_OPERATOR = 265,
+    PARA = 266,
+    PARC = 267,
+    COMA = 268,
+    IGUAL = 269,
+    MAYOR = 270,
+    CORCHA = 271,
+    CORCHC = 272,
+    LLAVEA = 273,
+    LLAVEC = 274,
+    PUNTOCOMA = 275,
+    NO = 276,
+    DOSPUNTOS = 277,
+    MENOR = 278,
+    PIPE = 279,
+    AMPERSAND = 280,
+    OPERATOR = 281,
+    INC_DEC = 282,
+    OPERATOR_FLUJO_IN = 283,
+    OPERATOR_FLUJO_OUT = 284
   };
 #endif
 
@@ -74,7 +86,7 @@ union YYSTYPE
   int numero;
   char* texto;
 
-#line 78 "sintactico.tab.h" /* yacc.c:1909  */
+#line 90 "sintactico.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

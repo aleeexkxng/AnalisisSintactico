@@ -61,6 +61,8 @@ OPERATION ({NUMBER}|({OPERATION_0}|{OPERATION_A}|{OPERATION_B}|{OPERATION_C}))({
 "]" 	{return(CORCHC);}
 "{" 	{return(LLAVEA);}
 "}" 	{return(LLAVEC);}
+"|" 	{return(PIPE);}
+"&" 	{return(AMPERSAND);}
 ";" 	{return(PUNTOCOMA);}
 ":"	{return(DOSPUNTOS);}
 "\n" 	{linea++;}
