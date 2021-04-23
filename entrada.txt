@@ -1,9 +1,4 @@
-variable_x =5;
-variable1 =variabley;
-varf = 1.56;
-varf1 = 2.55;
-for(variable_x =5;variable_x>=6;variable_z =7){}
-xxx==4;
-var2!=varf;
-while(variY<0){}
-do{}while(equis==2);
+int a = 9;
+float b = 0.9;
+string c = 'hola';
+c = 'h';

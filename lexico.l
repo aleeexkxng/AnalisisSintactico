@@ -15,7 +15,6 @@ IDENTIFICADOR   {LETRA}+({LETRA}|{DIGITO}|"_")*
 
 
 %%
-
 {IDENTIFICADOR} {yylval.texto=yytext; return (IDENTIFICADOR);}
 {NUMEROE} {yylval.numero=atoi(yytext); return(NUMEROE);}
 {NUMEROR} {yylval.real=atof(yytext); return(NUMEROR);}
@@ -31,6 +30,7 @@ IDENTIFICADOR   {LETRA}+({LETRA}|{DIGITO}|"_")*
 "{" 	{return(LLAVEA);}
 "}" 	{return(LLAVEC);}
 ";" 	{return(PUNTOCOMA);}
+"'"    {return(COMILLA);}
 "\n" 	{linea++;}
 [\t\r\f] {}
 " "		{}

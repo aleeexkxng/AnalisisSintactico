@@ -38,6 +38,7 @@
 %token PUNTOCOMA
 %token NO
 %token MENOR
+%token COMILLA
 
 
 %type <texto>asignacion
@@ -58,6 +59,7 @@ i:			asignacion PUNTOCOMA
             |comparacion PUNTOCOMA
             |ciclo_while
             |ciclo_dowhile PUNTOCOMA
+	    |declaraciones PUNTOCOMA
 			|error PUNTOCOMA
 			;
 			
@@ -66,6 +68,7 @@ asignacion:	    IDENTIFICADOR IGUAL NUMEROE  {printf(" Valor %d asignado coreect
                 |IDENTIFICADOR  IGUAL IDENTIFICADOR {printf("Linea aceptada\n");}
 				|IDENTIFICADOR IGUAL NUMEROR  {printf(" Valor %1.0f asignado coreectamente\n",$3);}
 				|asignacion COMA
+		|IDENTIFICADOR IGUAL COMILLA IDENTIFICADOR COMILLA {printf("Asignación de comilla aceptada.\n");}
 			;
 			
 comparacion:    IDENTIFICADOR IGUAL IGUAL IDENTIFICADOR {printf("Comparacion Exitosa\n");}
@@ -98,6 +101,12 @@ ciclo_while:    IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC {printf("Ciclo
 ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC {printf("Ciclo Do-While Exitoso\n");}
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
+
+declaraciones:  IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE {printf("Declaración exitosa NUMERO entero\n");}
+		|IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
+		|IDENTIFICADOR IDENTIFICADOR IGUAL COMILLA IDENTIFICADOR COMILLA {printf("Declaración exitosa string\n");}
+	;
+
                 
 %%
 /**********************
