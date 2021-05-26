@@ -2,13 +2,23 @@
 
   #include <stdio.h>
   #include <stdlib.h>
+  #include <iostream>
   #include <math.h>
+  #include <list>
   #include "string.h"
+  #include <string>
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
   extern FILE *yyin;
   void yyerror(char *s);
+  void printList();
+  std::list<std::string> vInt;
+  std::list<std::string> vChar;
+  std::list<std::string> vString;
+  std::list<std::string> vFloat;
+  
+  
 %}
 
 
@@ -171,6 +181,7 @@ declaraciones:  IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE {printf("Declaración 
 		|IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
 		|IDENTIFICADOR IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
 		|IDENTIFICADOR IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
+		|IDENTIFICADOR IDENTIFICADOR {lista.push_back($2);}
 	;
 	
 condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
@@ -198,6 +209,13 @@ void yyerror(char *s)
 {
 	printf("Error sintactico %s \n",s);
 }
+void printList(){
+    std::list<std::string>::iterator it = lista.begin();
+    while(it!= lista.end()){
+        std::cout<<"\t"<< *it++<<std::endl;
+    }
+
+}
 
 int main(int argc,char **argv)
 {
@@ -207,8 +225,10 @@ int main(int argc,char **argv)
 	else
 		//yyin=stdin;
 		yyin=fopen("entrada.txt","rt");
+        
 		
 
 	yyparse();
+	printList();
 	return 0;
 }

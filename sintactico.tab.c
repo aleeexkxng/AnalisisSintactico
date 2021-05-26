@@ -67,15 +67,21 @@
 
   #include <stdio.h>
   #include <stdlib.h>
+  #include <iostream>
   #include <math.h>
+  #include <list>
   #include "string.h"
+  #include <string>
   extern int yylex(void);
   extern char *yytext;
   extern int linea;
   extern FILE *yyin;
   void yyerror(char *s);
+  void printList();
+  std::list<std::string> lista;
+  
 
-#line 79 "sintactico.tab.c" /* yacc.c:339  */
+#line 85 "sintactico.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -145,13 +151,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 16 "sintactico.y" /* yacc.c:355  */
+#line 22 "sintactico.y" /* yacc.c:355  */
 
   float real;
   int numero;
   char* texto;
 
-#line 155 "sintactico.tab.c" /* yacc.c:355  */
+#line 161 "sintactico.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -168,7 +174,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 172 "sintactico.tab.c" /* yacc.c:358  */
+#line 178 "sintactico.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -417,7 +423,7 @@ union yyalloc
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  20
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  82
+#define YYNRULES  83
 /* YYNSTATES -- Number of states.  */
 #define YYNSTATES  174
 
@@ -468,15 +474,15 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    75,    75,    76,    78,    79,    80,    81,    82,    83,
-      84,    85,    86,    87,    88,    89,    90,    91,    94,    95,
-      98,    99,   100,   101,   102,   103,   104,   105,   106,   107,
-     110,   111,   114,   117,   120,   123,   124,   125,   126,   127,
-     128,   129,   130,   133,   136,   139,   140,   141,   142,   143,
-     144,   145,   146,   147,   148,   149,   150,   153,   154,   155,
-     156,   157,   158,   159,   162,   163,   166,   167,   170,   171,
-     172,   173,   176,   177,   178,   181,   182,   185,   186,   187,
-     188,   189,   190
+       0,    81,    81,    82,    84,    85,    86,    87,    88,    89,
+      90,    91,    92,    93,    94,    95,    96,    97,   100,   101,
+     104,   105,   106,   107,   108,   109,   110,   111,   112,   113,
+     116,   117,   120,   123,   126,   129,   130,   131,   132,   133,
+     134,   135,   136,   139,   142,   145,   146,   147,   148,   149,
+     150,   151,   152,   153,   154,   155,   156,   159,   160,   161,
+     162,   163,   164,   165,   168,   169,   172,   173,   176,   177,
+     178,   179,   180,   183,   184,   185,   188,   189,   192,   193,
+     194,   195,   196,   197
 };
 #endif
 
@@ -548,24 +554,24 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,    76,     0,     3,    11,     9,    10,     0,    12,
-       0,     5,     7,     0,     0,    15,    16,    14,    17,     0,
+       0,     0,    77,     0,     3,    11,     9,    10,     0,    12,
+       0,     5,     7,     0,     0,    15,    16,    14,    17,    72,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     1,     2,     4,     6,     8,    13,     0,     0,
       40,    39,     0,     0,     0,     0,     0,    37,    35,    36,
-      41,    42,    38,     0,    53,    54,     0,    75,     0,    55,
+      41,    42,    38,     0,    53,    54,     0,    76,     0,    55,
       56,     0,    43,    19,    27,    26,    25,    28,    29,    33,
       34,     0,     0,    69,    68,    70,    71,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,    46,    45,    50,
       49,     0,    52,    51,    48,    47,    18,    24,    23,    20,
-      21,    22,     0,     0,     0,    77,     0,     0,     0,    65,
+      21,    22,     0,     0,     0,    78,     0,     0,     0,    65,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    79,     0,    80,    31,    82,     0,     0,     0,     0,
-       0,     0,    72,     0,     0,     0,    64,     0,     0,    67,
+       0,    80,     0,    81,    31,    83,     0,     0,     0,     0,
+       0,     0,    73,     0,     0,     0,    64,     0,     0,    67,
        0,     0,    30,    32,     0,    44,     0,     0,     0,     0,
-       0,     0,     0,     0,    66,     0,    78,    61,    62,     0,
-      63,     0,     0,     0,     0,     0,    81,    58,    59,    60,
-       0,    73,    74,    57
+       0,     0,     0,     0,    66,     0,    79,    61,    62,     0,
+      63,     0,     0,     0,     0,     0,    82,    58,    59,    60,
+       0,    74,    75,    57
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -665,8 +671,8 @@ static const yytype_uint8 yyr1[] =
       39,    39,    39,    40,    41,    42,    42,    42,    42,    42,
       42,    42,    42,    42,    42,    42,    42,    43,    43,    43,
       43,    43,    43,    43,    44,    44,    45,    45,    46,    46,
-      46,    46,    47,    47,    47,    48,    48,    49,    49,    49,
-      49,    49,    49
+      46,    46,    46,    47,    47,    47,    48,    48,    49,    49,
+      49,    49,    49,    49
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -679,8 +685,8 @@ static const yytype_uint8 yyr2[] =
        3,     3,     3,     3,     2,     4,     4,     4,     4,     4,
        4,     4,     4,     3,     3,     3,     3,    10,     9,     9,
        9,     8,     8,     8,     6,     5,     7,     6,     4,     4,
-       4,     4,     6,     9,     9,     3,     1,     5,     8,     6,
-       6,     9,     6
+       4,     4,     2,     6,     9,     9,     3,     1,     5,     8,
+       6,     6,     9,     6
 };
 
 
@@ -1357,307 +1363,313 @@ yyreduce:
   switch (yyn)
     {
         case 32:
-#line 114 "sintactico.y" /* yacc.c:1646  */
+#line 120 "sintactico.y" /* yacc.c:1646  */
     {printf("switch correcto\n");}
-#line 1363 "sintactico.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 33:
-#line 117 "sintactico.y" /* yacc.c:1646  */
-    {printf("cin ejecutado correctamente\n");}
 #line 1369 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 34:
-#line 120 "sintactico.y" /* yacc.c:1646  */
-    {printf("cout ejecutado correctamente\n");}
+  case 33:
+#line 123 "sintactico.y" /* yacc.c:1646  */
+    {printf("cin ejecutado correctamente\n");}
 #line 1375 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 35:
-#line 123 "sintactico.y" /* yacc.c:1646  */
-    {printf(" Valor %d asignado coreectamente \n",(yyvsp[0].numero));}
+  case 34:
+#line 126 "sintactico.y" /* yacc.c:1646  */
+    {printf("cout ejecutado correctamente\n");}
 #line 1381 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 124 "sintactico.y" /* yacc.c:1646  */
-    {printf("Linea aceptada\n");}
+  case 35:
+#line 129 "sintactico.y" /* yacc.c:1646  */
+    {printf(" Valor %d asignado coreectamente \n",(yyvsp[0].numero));}
 #line 1387 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 37:
-#line 125 "sintactico.y" /* yacc.c:1646  */
-    {printf(" Valor %1.0f asignado coreectamente\n",(yyvsp[0].real));}
+  case 36:
+#line 130 "sintactico.y" /* yacc.c:1646  */
+    {printf("Linea aceptada\n");}
 #line 1393 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 38:
-#line 126 "sintactico.y" /* yacc.c:1646  */
-    {printf("Valor de operacion asiganado correctamente\n");}
+  case 37:
+#line 131 "sintactico.y" /* yacc.c:1646  */
+    {printf(" Valor %1.0f asignado coreectamente\n",(yyvsp[0].real));}
 #line 1399 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 39:
-#line 127 "sintactico.y" /* yacc.c:1646  */
+  case 38:
+#line 132 "sintactico.y" /* yacc.c:1646  */
     {printf("Valor de operacion asiganado correctamente\n");}
 #line 1405 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 40:
-#line 128 "sintactico.y" /* yacc.c:1646  */
+  case 39:
+#line 133 "sintactico.y" /* yacc.c:1646  */
     {printf("Valor de operacion asiganado correctamente\n");}
 #line 1411 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 41:
-#line 129 "sintactico.y" /* yacc.c:1646  */
-    {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
+  case 40:
+#line 134 "sintactico.y" /* yacc.c:1646  */
+    {printf("Valor de operacion asiganado correctamente\n");}
 #line 1417 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 130 "sintactico.y" /* yacc.c:1646  */
+  case 41:
+#line 135 "sintactico.y" /* yacc.c:1646  */
     {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
 #line 1423 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 133 "sintactico.y" /* yacc.c:1646  */
-    {printf("Decremento/incremento exito\n");}
+  case 42:
+#line 136 "sintactico.y" /* yacc.c:1646  */
+    {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
 #line 1429 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 45:
+  case 43:
 #line 139 "sintactico.y" /* yacc.c:1646  */
-    {printf("Comparacion Exitosa\n");}
+    {printf("Decremento/incremento exito\n");}
 #line 1435 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 140 "sintactico.y" /* yacc.c:1646  */
+  case 45:
+#line 145 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1441 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 141 "sintactico.y" /* yacc.c:1646  */
+  case 46:
+#line 146 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1447 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 48:
-#line 142 "sintactico.y" /* yacc.c:1646  */
+  case 47:
+#line 147 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1453 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 143 "sintactico.y" /* yacc.c:1646  */
+  case 48:
+#line 148 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1459 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 144 "sintactico.y" /* yacc.c:1646  */
+  case 49:
+#line 149 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1465 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 51:
-#line 145 "sintactico.y" /* yacc.c:1646  */
+  case 50:
+#line 150 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1471 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 52:
-#line 146 "sintactico.y" /* yacc.c:1646  */
+  case 51:
+#line 151 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1477 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 53:
-#line 147 "sintactico.y" /* yacc.c:1646  */
+  case 52:
+#line 152 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1483 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 54:
-#line 148 "sintactico.y" /* yacc.c:1646  */
+  case 53:
+#line 153 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1489 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 55:
-#line 149 "sintactico.y" /* yacc.c:1646  */
+  case 54:
+#line 154 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1495 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 56:
-#line 150 "sintactico.y" /* yacc.c:1646  */
+  case 55:
+#line 155 "sintactico.y" /* yacc.c:1646  */
     {printf("Comparacion Exitosa\n");}
 #line 1501 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 57:
-#line 153 "sintactico.y" /* yacc.c:1646  */
-    {printf("Ciclo for aceptado\n");}
+  case 56:
+#line 156 "sintactico.y" /* yacc.c:1646  */
+    {printf("Comparacion Exitosa\n");}
 #line 1507 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 58:
-#line 154 "sintactico.y" /* yacc.c:1646  */
+  case 57:
+#line 159 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1513 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 59:
-#line 155 "sintactico.y" /* yacc.c:1646  */
+  case 58:
+#line 160 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1519 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 60:
-#line 156 "sintactico.y" /* yacc.c:1646  */
+  case 59:
+#line 161 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1525 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 61:
-#line 157 "sintactico.y" /* yacc.c:1646  */
+  case 60:
+#line 162 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1531 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 62:
-#line 158 "sintactico.y" /* yacc.c:1646  */
+  case 61:
+#line 163 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1537 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 63:
-#line 159 "sintactico.y" /* yacc.c:1646  */
+  case 62:
+#line 164 "sintactico.y" /* yacc.c:1646  */
     {printf("Ciclo for aceptado\n");}
 #line 1543 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 64:
-#line 162 "sintactico.y" /* yacc.c:1646  */
-    {printf("Instruccion Exitosa\n");}
+  case 63:
+#line 165 "sintactico.y" /* yacc.c:1646  */
+    {printf("Ciclo for aceptado\n");}
 #line 1549 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 65:
-#line 163 "sintactico.y" /* yacc.c:1646  */
+  case 64:
+#line 168 "sintactico.y" /* yacc.c:1646  */
     {printf("Instruccion Exitosa\n");}
 #line 1555 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 66:
-#line 166 "sintactico.y" /* yacc.c:1646  */
-    {printf("Ciclo Do-While Exitoso\n");}
+  case 65:
+#line 169 "sintactico.y" /* yacc.c:1646  */
+    {printf("Instruccion Exitosa\n");}
 #line 1561 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 67:
-#line 167 "sintactico.y" /* yacc.c:1646  */
-    {printf("Ciclo Do- While Exitoso\n");}
+  case 66:
+#line 172 "sintactico.y" /* yacc.c:1646  */
+    {printf("Ciclo Do-While Exitoso\n");}
 #line 1567 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 68:
-#line 170 "sintactico.y" /* yacc.c:1646  */
-    {printf("Declaración exitosa NUMERO entero\n");}
+  case 67:
+#line 173 "sintactico.y" /* yacc.c:1646  */
+    {printf("Ciclo Do- While Exitoso\n");}
 #line 1573 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 69:
-#line 171 "sintactico.y" /* yacc.c:1646  */
-    {printf("Declaración exitosa numero real\n");}
+  case 68:
+#line 176 "sintactico.y" /* yacc.c:1646  */
+    {printf("Declaración exitosa NUMERO entero\n");}
 #line 1579 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 70:
-#line 172 "sintactico.y" /* yacc.c:1646  */
-    {printf("Declaración exitosa string\n");}
+  case 69:
+#line 177 "sintactico.y" /* yacc.c:1646  */
+    {printf("Declaración exitosa numero real\n");}
 #line 1585 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 71:
-#line 173 "sintactico.y" /* yacc.c:1646  */
-    {printf("Declaración exitosa char\n");}
+  case 70:
+#line 178 "sintactico.y" /* yacc.c:1646  */
+    {printf("Declaración exitosa string\n");}
 #line 1591 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 72:
-#line 176 "sintactico.y" /* yacc.c:1646  */
-    {printf("Condicion if exitosa \n");}
+  case 71:
+#line 179 "sintactico.y" /* yacc.c:1646  */
+    {printf("Declaración exitosa char\n");}
 #line 1597 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 73:
-#line 177 "sintactico.y" /* yacc.c:1646  */
-    {printf("Condicion if exitosa \n");}
+  case 72:
+#line 180 "sintactico.y" /* yacc.c:1646  */
+    {lista.push_back((yyvsp[0].texto));}
 #line 1603 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 74:
-#line 178 "sintactico.y" /* yacc.c:1646  */
+  case 73:
+#line 183 "sintactico.y" /* yacc.c:1646  */
     {printf("Condicion if exitosa \n");}
 #line 1609 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 75:
-#line 181 "sintactico.y" /* yacc.c:1646  */
-    {printf("Else exitoso \n");}
+  case 74:
+#line 184 "sintactico.y" /* yacc.c:1646  */
+    {printf("Condicion if exitosa \n");}
 #line 1615 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 76:
-#line 182 "sintactico.y" /* yacc.c:1646  */
-    {printf("Else exitoso \n");}
+  case 75:
+#line 185 "sintactico.y" /* yacc.c:1646  */
+    {printf("Condicion if exitosa \n");}
 #line 1621 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 77:
-#line 185 "sintactico.y" /* yacc.c:1646  */
-    {printf("Funcion exitosa \n");}
+  case 76:
+#line 188 "sintactico.y" /* yacc.c:1646  */
+    {printf("Else exitoso \n");}
 #line 1627 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 78:
-#line 186 "sintactico.y" /* yacc.c:1646  */
-    {printf("Funcion exitosa \n");}
+  case 77:
+#line 189 "sintactico.y" /* yacc.c:1646  */
+    {printf("Else exitoso \n");}
 #line 1633 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 79:
-#line 187 "sintactico.y" /* yacc.c:1646  */
+  case 78:
+#line 192 "sintactico.y" /* yacc.c:1646  */
     {printf("Funcion exitosa \n");}
 #line 1639 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 80:
-#line 188 "sintactico.y" /* yacc.c:1646  */
+  case 79:
+#line 193 "sintactico.y" /* yacc.c:1646  */
     {printf("Funcion exitosa \n");}
 #line 1645 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 81:
-#line 189 "sintactico.y" /* yacc.c:1646  */
+  case 80:
+#line 194 "sintactico.y" /* yacc.c:1646  */
     {printf("Funcion exitosa \n");}
 #line 1651 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 82:
-#line 190 "sintactico.y" /* yacc.c:1646  */
+  case 81:
+#line 195 "sintactico.y" /* yacc.c:1646  */
     {printf("Funcion exitosa \n");}
 #line 1657 "sintactico.tab.c" /* yacc.c:1646  */
     break;
 
+  case 82:
+#line 196 "sintactico.y" /* yacc.c:1646  */
+    {printf("Funcion exitosa \n");}
+#line 1663 "sintactico.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1661 "sintactico.tab.c" /* yacc.c:1646  */
+  case 83:
+#line 197 "sintactico.y" /* yacc.c:1646  */
+    {printf("Funcion exitosa \n");}
+#line 1669 "sintactico.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1673 "sintactico.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1885,7 +1897,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 193 "sintactico.y" /* yacc.c:1906  */
+#line 200 "sintactico.y" /* yacc.c:1906  */
 
 /**********************
  * Codigo C Adicional *
@@ -1893,6 +1905,13 @@ yyreturn:
 void yyerror(char *s)
 {
 	printf("Error sintactico %s \n",s);
+}
+void printList(){
+    std::list<std::string>::iterator it = lista.begin();
+    while(it!= lista.end()){
+        std::cout<<"\t"<< *it++<<std::endl;
+    }
+
 }
 
 int main(int argc,char **argv)
@@ -1903,8 +1922,10 @@ int main(int argc,char **argv)
 	else
 		//yyin=stdin;
 		yyin=fopen("entrada.txt","rt");
+        
 		
 
 	yyparse();
+	printList();
 	return 0;
 }
