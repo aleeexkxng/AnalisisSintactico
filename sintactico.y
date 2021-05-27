@@ -7,7 +7,7 @@
   #include <list>
   #include "string.h"
   #include <string>
-  extern int yylex(void);
+  extern "C" int yylex(void);
   extern char *yytext;
   extern int linea;
   extern FILE *yyin;

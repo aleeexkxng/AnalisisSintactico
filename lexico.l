@@ -3,6 +3,7 @@
 	#include <stdlib.h>
 	#include "sintactico.tab.h"	
 	
+	extern "C" int yylex(void);
 	int linea=0;
 %}
 
