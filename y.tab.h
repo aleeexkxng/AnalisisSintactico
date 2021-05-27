@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_SINTACTICO_TAB_H_INCLUDED
-# define YY_YY_SINTACTICO_TAB_H_INCLUDED
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -88,6 +88,42 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
+#define NUMEROR 258
+#define NUMEROE 259
+#define CHAR_DATATYPE 260
+#define INT_DATATYPE 261
+#define STRING_DATATYPE 262
+#define FLOAT_DATATYPE 263
+#define IDENTIFICADOR 264
+#define CADENA 265
+#define CHAR 266
+#define OPERATION 267
+#define EQUALARITHMETIC_OPERATORS 268
+#define ARITHMETIC_OPERATOR 269
+#define PARA 270
+#define PARC 271
+#define COMA 272
+#define IGUAL 273
+#define MAYOR 274
+#define CORCHA 275
+#define CORCHC 276
+#define LLAVEA 277
+#define LLAVEC 278
+#define PUNTOCOMA 279
+#define NO 280
+#define DOSPUNTOS 281
+#define MENOR 282
+#define PIPE 283
+#define AMPERSAND 284
+#define OPERATOR 285
+#define INC_DEC 286
+#define OPERATOR_FLUJO_IN 287
+#define OPERATOR_FLUJO_OUT 288
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -99,7 +135,7 @@ union YYSTYPE
   int numero;
   char* texto;
 
-#line 103 "sintactico.tab.h"
+#line 139 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -112,4 +148,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_SINTACTICO_TAB_H_INCLUDED  */
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */

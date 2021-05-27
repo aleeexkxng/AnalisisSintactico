@@ -35,6 +35,10 @@
 
 %token <real>NUMEROR
 %token <numero>NUMEROE
+%token <texto>CHAR_DATATYPE
+%token <texto>INT_DATATYPE
+%token <texto>STRING_DATATYPE
+%token <texto>FLOAT_DATATYPE
 %token <texto>IDENTIFICADOR
 %token <texto>CADENA
 %token <texto>CHAR
@@ -181,7 +185,7 @@ declaraciones:  IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE {printf("Declaración 
 		|IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
 		|IDENTIFICADOR IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
 		|IDENTIFICADOR IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
-		|IDENTIFICADOR IDENTIFICADOR {lista.push_back($2);}
+		|INT_DATATYPE IDENTIFICADOR {vInt.push_back($2);}
 	;
 	
 condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
@@ -210,11 +214,10 @@ void yyerror(char *s)
 	printf("Error sintactico %s \n",s);
 }
 void printList(){
-    std::list<std::string>::iterator it = lista.begin();
-    while(it!= lista.end()){
+    std::list<std::string>::iterator it = vInt.begin();
+    while(it!= vInt.end()){
         std::cout<<"\t"<< *it++<<std::endl;
     }
-
 }
 
 int main(int argc,char **argv)

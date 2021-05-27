@@ -14,6 +14,11 @@ IDENTIFICADOR   {LETRA}+({LETRA}|{DIGITO}|"_")*
 CHAR "'"(.)"'"
 CADENA "\""(.)*"\""
 
+CHAR_DATATYPE "char"
+INT_DATATYPE "int"
+STRING_DATATYPE "string"
+FLOAT_DATATYPE "float"
+
 OPERATOR_FLUJO_IN ">>"
 OPERATOR_FLUJO_OUT "<<"
 
@@ -37,6 +42,10 @@ OPERATION ({NUMBER}|({OPERATION_0}|{OPERATION_A}|{OPERATION_B}|{OPERATION_C}))({
 
 %%
 
+{CHAR_DATATYPE} {yylval.texto=yytext; return (CHAR_DATATYPE);}
+{INT_DATATYPE} {yylval.texto=yytext; return (INT_DATATYPE);}
+{STRING_DATATYPE} {yylval.texto=yytext; return (STRING_DATATYPE);}
+{FLOAT_DATATYPE} {yylval.texto=yytext; return (FLOAT_DATATYPE);}
 {IDENTIFICADOR} {yylval.texto=yytext; return (IDENTIFICADOR);}
 {NUMEROE} {yylval.numero=atoi(yytext); return(NUMEROE);}
 {NUMEROR} {yylval.real=atof(yytext); return(NUMEROR);}
