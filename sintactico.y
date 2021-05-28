@@ -6,19 +6,18 @@
   #include <math.h>
   #include <list>
   #include "string.h"
+  #include <utility>
   #include <string>
   extern "C" int yylex(void);
   extern char *yytext;
   extern int linea;
   extern FILE *yyin;
   void yyerror(char *s);
-  void printList();
-  std::list<std::string> vInt;
-  std::list<std::string> vChar;
-  std::list<std::string> vString;
-  std::list<std::string> vFloat;
-  
-  
+
+  bool existVariable(std::string);
+
+  std::list<std::pair<std::string, std::string>> variables;
+  std::pair<std::string, std::string> data;
 %}
 
 
@@ -181,11 +180,20 @@ ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC 
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
                 
-declaraciones:  IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE {printf("Declaración exitosa NUMERO entero\n");}
-		|IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
-		|IDENTIFICADOR IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
-		|IDENTIFICADOR IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
-		|INT_DATATYPE IDENTIFICADOR {vInt.push_back($2);}
+declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {printf("Declaración exitosa NUMERO entero\n");}
+		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
+		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
+		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
+		|INT_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
+							printf("Error semantico, variable ya declarada\n");						
+						} else {
+							printf("variable declarada con exito!, int\n");
+							data.first=$2; data.second="int";
+							variables.push_back(data);
+						} }
+		|FLOAT_DATATYPE IDENTIFICADOR {}
+		|STRING_DATATYPE IDENTIFICADOR {}
+		|CHAR_DATATYPE IDENTIFICADOR {}
 	;
 	
 condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
@@ -197,12 +205,30 @@ sino_else:      IDENTIFICADOR LLAVEA LLAVEC {printf("Else exitoso \n");}
                 |IDENTIFICADOR  {printf("Else exitoso \n");}
                 ;
                 
-funcion:        IDENTIFICADOR IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
-                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
-                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
-                |IDENTIFICADOR IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
-                |IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
-                |IDENTIFICADOR PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+funcion:        INT_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |INT_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |INT_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+		|FLOAT_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |FLOAT_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |FLOAT_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+		|STRING_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |STRING_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |STRING_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+		|CHAR_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA {printf("Funcion exitosa \n");}
+                |CHAR_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
+                |CHAR_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC {printf("Funcion exitosa \n");}
                 ;
 
 %%
@@ -213,11 +239,16 @@ void yyerror(char *s)
 {
 	printf("Error sintactico %s \n",s);
 }
-void printList(){
-    std::list<std::string>::iterator it = vInt.begin();
-    while(it!= vInt.end()){
-        std::cout<<"\t"<< *it++<<std::endl;
-    }
+
+bool existVariable(std::string e) {
+	std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
+	while (it!=variables.end()) {
+		if (it->first == e) {
+			return true;		
+		}
+		it++;
+	}
+	return false;
 }
 
 int main(int argc,char **argv)
@@ -232,6 +263,5 @@ int main(int argc,char **argv)
 		
 
 	yyparse();
-	printList();
 	return 0;
 }

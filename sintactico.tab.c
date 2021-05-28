@@ -76,21 +76,20 @@
   #include <math.h>
   #include <list>
   #include "string.h"
+  #include <utility>
   #include <string>
   extern "C" int yylex(void);
   extern char *yytext;
   extern int linea;
   extern FILE *yyin;
   void yyerror(char *s);
-  void printList();
-  std::list<std::string> vInt;
-  std::list<std::string> vChar;
-  std::list<std::string> vString;
-  std::list<std::string> vFloat;
-  
-  
 
-#line 94 "sintactico.tab.c"
+  bool existVariable(std::string);
+
+  std::list<std::pair<std::string, std::string>> variables;
+  std::pair<std::string, std::string> data;
+
+#line 93 "sintactico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -491,18 +490,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  34
+#define YYFINAL  43
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   185
+#define YYLAST   260
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  34
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  20
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  83
+#define YYNRULES  104
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  176
+#define YYNSTATES  244
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   288
@@ -554,15 +553,17 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    89,    89,    90,    92,    93,    94,    95,    96,    97,
-      98,    99,   100,   101,   102,   103,   104,   105,   108,   109,
-     112,   113,   114,   115,   116,   117,   118,   119,   120,   121,
-     124,   125,   128,   131,   134,   137,   138,   139,   140,   141,
-     142,   143,   144,   147,   150,   153,   154,   155,   156,   157,
-     158,   159,   160,   161,   162,   163,   164,   167,   168,   169,
-     170,   171,   172,   173,   176,   177,   180,   181,   184,   185,
-     186,   187,   188,   191,   192,   193,   196,   197,   200,   201,
-     202,   203,   204,   205
+       0,    88,    88,    89,    91,    92,    93,    94,    95,    96,
+      97,    98,    99,   100,   101,   102,   103,   104,   107,   108,
+     111,   112,   113,   114,   115,   116,   117,   118,   119,   120,
+     123,   124,   127,   130,   133,   136,   137,   138,   139,   140,
+     141,   142,   143,   146,   149,   152,   153,   154,   155,   156,
+     157,   158,   159,   160,   161,   162,   163,   166,   167,   168,
+     169,   170,   171,   172,   175,   176,   179,   180,   183,   184,
+     185,   186,   187,   194,   195,   196,   199,   200,   201,   204,
+     205,   208,   209,   210,   211,   212,   213,   214,   215,   216,
+     217,   218,   219,   220,   221,   222,   223,   224,   225,   226,
+     227,   228,   229,   230,   231
 };
 #endif
 
@@ -610,7 +611,7 @@ static const yytype_int16 yytoknum[] =
 };
 #endif
 
-#define YYPACT_NINF (-111)
+#define YYPACT_NINF (-160)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -624,24 +625,31 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       4,   -21,     5,    -7,    63,  -111,  -111,  -111,  -111,    16,
-    -111,    24,  -111,  -111,    35,    41,  -111,  -111,  -111,  -111,
-    -111,    74,   116,    22,    25,    12,    53,    90,    43,    99,
-     115,    71,   101,   102,  -111,  -111,  -111,  -111,  -111,  -111,
-      69,    80,  -111,  -111,    26,   106,    -5,    17,    38,  -111,
-    -111,  -111,  -111,  -111,  -111,    64,  -111,  -111,    96,   118,
-      97,  -111,  -111,    98,  -111,   100,   103,   103,   103,   103,
-     103,  -111,  -111,   105,    93,  -111,  -111,  -111,  -111,     0,
-     107,    52,   120,   109,   112,     8,   113,   110,   108,  -111,
-    -111,  -111,  -111,   124,  -111,  -111,  -111,  -111,  -111,  -111,
-    -111,  -111,  -111,  -111,   117,   122,   119,  -111,   114,   121,
-     123,  -111,   125,    91,   130,    77,   126,    78,   127,   129,
-     138,   138,    79,  -111,   132,  -111,   141,  -111,   131,    46,
-     133,   128,   134,   137,  -111,   135,   142,    87,  -111,   144,
-     145,  -111,   146,    94,  -111,  -111,   140,  -111,   143,   147,
-     148,   150,   151,   149,   152,   153,  -111,   154,  -111,  -111,
-    -111,   155,  -111,   156,   157,   159,   160,   161,  -111,  -111,
-    -111,  -111,   162,  -111,  -111,  -111
+      80,   -18,    11,    40,    44,    63,   -10,    57,  -160,  -160,
+    -160,  -160,    -6,  -160,     7,  -160,  -160,    15,    45,  -160,
+    -160,  -160,  -160,   107,   114,   120,   133,   121,   149,   122,
+     153,    47,    -5,    26,    23,   108,   126,    38,   139,   155,
+      87,   141,   142,  -160,  -160,  -160,  -160,  -160,  -160,    -2,
+     156,   152,    83,   165,   154,    84,   161,   157,    85,   169,
+     158,  -160,  -160,    27,   159,     1,     0,    32,  -160,  -160,
+    -160,  -160,  -160,  -160,   104,  -160,  -160,   105,   166,   111,
+    -160,  -160,   112,  -160,   145,   143,   143,   143,   143,   143,
+    -160,  -160,    67,   119,  -160,   160,    90,   123,  -160,   162,
+     101,   124,  -160,   163,   144,   127,  -160,   164,   170,   167,
+      52,   171,   168,   172,     4,   173,   150,   174,  -160,  -160,
+    -160,  -160,   176,  -160,  -160,  -160,  -160,  -160,  -160,  -160,
+    -160,  -160,  -160,   175,   178,   177,  -160,   179,   180,   184,
+     182,  -160,   183,   185,   187,   188,  -160,   189,   186,   192,
+     190,  -160,   191,   181,   193,  -160,   198,   106,   201,    86,
+     195,    94,   196,   199,   210,   210,    95,  -160,   205,  -160,
+    -160,  -160,   207,  -160,  -160,  -160,   208,  -160,  -160,  -160,
+     209,  -160,  -160,   170,   203,    64,   206,   200,   211,   213,
+    -160,   212,   214,    96,  -160,   216,   219,  -160,   220,   128,
+     131,   132,   135,  -160,  -160,   204,  -160,   215,   217,   218,
+     221,   222,   224,   223,   225,  -160,   226,  -160,   227,  -160,
+     228,  -160,   229,  -160,  -160,  -160,   230,  -160,   231,   232,
+     234,   235,   236,  -160,  -160,  -160,  -160,  -160,  -160,  -160,
+     237,  -160,  -160,  -160
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -649,38 +657,45 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,    77,     0,     3,    11,     9,    10,     0,
-      12,     0,     5,     7,     0,     0,    15,    16,    14,    17,
-      72,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     1,     2,     4,     6,     8,    13,
-       0,     0,    40,    39,     0,     0,     0,     0,     0,    37,
-      35,    36,    41,    42,    38,     0,    53,    54,     0,    76,
-       0,    55,    56,     0,    43,    19,    27,    26,    25,    28,
-      29,    33,    34,     0,     0,    69,    68,    70,    71,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,    46,
-      45,    50,    49,     0,    52,    51,    48,    47,    18,    24,
-      23,    20,    21,    22,     0,     0,     0,    78,     0,     0,
-       0,    65,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,    80,     0,    81,    31,    83,     0,     0,
-       0,     0,     0,     0,    73,     0,     0,     0,    64,     0,
-       0,    67,     0,     0,    30,    32,     0,    44,     0,     0,
-       0,     0,     0,     0,     0,     0,    66,     0,    79,    61,
-      62,     0,    63,     0,     0,     0,     0,     0,    82,    58,
-      59,    60,     0,    74,    75,    57
+       0,     0,     0,     0,     0,     0,    80,     0,     3,    11,
+       9,    10,     0,    12,     0,     5,     7,     0,     0,    15,
+      16,    14,    17,    75,     0,    72,     0,    74,     0,    73,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     1,     2,     4,     6,     8,    13,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    40,    39,     0,     0,     0,     0,     0,    37,    35,
+      36,    41,    42,    38,     0,    53,    54,     0,    79,     0,
+      55,    56,     0,    43,    19,    27,    26,    25,    28,    29,
+      33,    34,     0,     0,    71,     0,     0,     0,    68,     0,
+       0,     0,    70,     0,     0,     0,    69,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    46,    45,
+      50,    49,     0,    52,    51,    48,    47,    18,    24,    23,
+      20,    21,    22,     0,     0,     0,    99,     0,     0,     0,
+       0,    81,     0,     0,     0,     0,    93,     0,     0,     0,
+       0,    87,     0,     0,     0,    65,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   101,     0,   102,
+     104,    83,     0,    84,    86,    95,     0,    96,    98,    89,
+       0,    90,    92,    31,     0,     0,     0,     0,     0,     0,
+      76,     0,     0,     0,    64,     0,     0,    67,     0,     0,
+       0,     0,     0,    30,    32,     0,    44,     0,     0,     0,
+       0,     0,     0,     0,     0,    66,     0,   100,     0,    82,
+       0,    94,     0,    88,    61,    62,     0,    63,     0,     0,
+       0,     0,     0,   103,    85,    97,    91,    58,    59,    60,
+       0,    77,    78,    57
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -111,  -111,   163,   111,    44,    42,  -111,  -111,  -111,   -22,
-    -111,  -110,   -23,  -111,  -111,  -111,  -111,  -111,  -111,  -111
+    -160,  -160,   239,    99,    41,     5,  -160,  -160,  -160,   -31,
+    -160,  -159,   -32,  -160,  -160,  -160,  -160,  -160,  -160,  -160
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_uint8 yydefgoto[] =
 {
-       0,     4,     5,    32,    33,   110,     6,     7,     8,     9,
-      10,   133,    11,    12,    13,    14,    15,    16,    17,    18
+       0,     7,     8,    41,    42,   154,     9,    10,    11,    12,
+      13,   189,    14,    15,    16,    17,    18,    19,    20,    21
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -688,72 +703,95 @@ static const yytype_uint8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      48,    47,    21,    19,    81,     1,    22,   136,    23,   108,
-       2,    24,    25,     3,    20,    26,    56,    81,    27,    82,
-      28,    57,   109,    83,    29,    30,    31,   153,    49,    50,
-      58,    44,   117,    84,    51,    52,    53,    54,    45,    22,
-      36,    85,    79,    55,    24,    25,    46,    61,    37,    49,
-      50,    27,    62,    28,    86,    51,    52,    53,    54,    38,
-     114,    63,   118,    34,     1,    39,    87,    88,    89,     2,
-     112,    25,     3,    90,    66,    67,    59,    27,    73,    28,
-      68,    69,    70,    75,    76,    74,   131,   131,    81,    40,
-      77,    78,    41,   132,   135,   141,   131,   139,   140,   142,
-      91,    94,    96,   152,    22,    92,    95,    97,    60,   129,
-      99,   100,   101,   102,   103,   106,   157,   107,   158,    42,
-      43,   104,   105,    64,    65,    71,    72,    93,    80,   113,
-     111,   124,    30,   115,   116,   119,    31,   121,   120,   122,
-     126,   123,   125,    55,   127,   128,   130,    81,   143,   134,
-     108,   137,   138,   149,   145,   146,   148,   150,   151,   147,
-     154,   155,   156,   159,     0,   165,   160,    35,   144,   161,
-       0,   162,   163,   164,   166,   167,    98,   168,   169,   170,
-     171,   172,     0,   173,   174,   175
+      67,    66,   192,    31,    63,    32,    22,    92,    33,    34,
+     110,    64,    35,   110,    93,    36,   113,    37,    45,    65,
+      23,    38,    39,    40,   114,   111,    24,    75,   161,    68,
+      69,    46,    76,   112,   212,    70,    71,    72,    73,    47,
+      31,    77,    80,   108,    74,    33,    34,    81,   115,    25,
+      61,    62,    36,    27,    37,    26,    82,    43,     1,    28,
+     116,   117,     2,     3,     4,     5,     6,    68,    69,    48,
+     156,    34,    29,    70,    71,    72,    73,    36,    30,    37,
+     158,     1,   162,   133,   134,     2,     3,     4,     5,     6,
+      85,    86,    96,   100,   104,   187,    87,    88,    89,    97,
+     101,   105,   188,   187,   110,   187,   138,   139,   118,   120,
+     191,   197,   211,   119,   121,   123,   125,   143,   144,    31,
+     124,   126,    49,    51,   185,    50,   128,   129,   130,   131,
+     132,    78,   195,   196,   198,    52,    55,    58,    53,    56,
+      59,   135,    54,   136,    79,   140,   145,   141,   146,   150,
+     216,   151,   217,   218,   220,   219,   221,   222,    57,   223,
+     148,   149,    60,    83,    84,    90,    91,    94,    95,    98,
+      99,   102,   106,   103,   107,   122,    40,    39,   164,   153,
+     157,   109,   137,   127,   142,   147,   152,   168,   203,     0,
+     155,   166,   159,   172,   160,   163,   176,     0,     0,   167,
+     169,   180,   170,   165,   171,   173,   174,   183,     0,   175,
+     179,   177,   178,   181,   182,   184,    74,   186,   190,   110,
+     193,   199,   194,   200,   201,   202,   204,   224,   205,   208,
+     210,   206,   213,   207,   209,   214,   215,     0,   225,   226,
+     230,   227,     0,   228,   229,   231,    44,   232,     0,   233,
+     234,   235,   236,   237,   238,   239,   240,     0,   241,   242,
+     243
 };
 
 static const yytype_int16 yycheck[] =
 {
-      23,    23,     9,    24,     9,     1,    13,   117,    15,     9,
-       6,    18,    19,     9,     9,    22,     4,     9,    25,    24,
-      27,     9,    22,    46,    31,    32,    33,   137,     3,     4,
-      18,     9,    24,    16,     9,    10,    11,    12,    16,    13,
-      24,    24,    16,    18,    18,    19,    24,     4,    24,     3,
-       4,    25,     9,    27,    16,     9,    10,    11,    12,    24,
-      82,    18,    85,     0,     1,    24,    28,    29,     4,     6,
-      18,    19,     9,     9,     3,     4,    23,    25,     9,    27,
-       9,    10,    11,     3,     4,    16,     9,     9,     9,    15,
-      10,    11,    18,    16,    16,    16,     9,   120,   121,   122,
-       4,     4,     4,    16,    13,     9,     9,     9,    18,    18,
-      66,    67,    68,    69,    70,    22,    22,    24,    24,     3,
-       4,    16,    17,    24,     9,    24,    24,     9,    22,     9,
-      23,     9,    32,    24,    22,    22,    33,    29,    28,    15,
-      26,    24,    23,    18,    23,    22,    16,     9,    16,    23,
-       9,    24,    23,    16,    23,    22,    22,    22,    16,    31,
-      16,    16,    16,    23,    -1,    16,    23,     4,   126,    22,
-      -1,    23,    22,    22,    22,    22,    65,    23,    23,    23,
-      23,    22,    -1,    23,    23,    23
+      32,    32,   161,    13,     9,    15,    24,     9,    18,    19,
+       9,    16,    22,     9,    16,    25,    16,    27,    24,    24,
+       9,    31,    32,    33,    24,    24,    15,     4,    24,     3,
+       4,    24,     9,    65,   193,     9,    10,    11,    12,    24,
+      13,    18,     4,    16,    18,    18,    19,     9,    16,     9,
+       3,     4,    25,     9,    27,    15,    18,     0,     1,    15,
+      28,    29,     5,     6,     7,     8,     9,     3,     4,    24,
+      18,    19,     9,     9,    10,    11,    12,    25,    15,    27,
+     111,     1,   114,    16,    17,     5,     6,     7,     8,     9,
+       3,     4,     9,     9,     9,     9,     9,    10,    11,    16,
+      16,    16,    16,     9,     9,     9,    16,    17,     4,     4,
+      16,    16,    16,     9,     9,     4,     4,    16,    17,    13,
+       9,     9,    15,     9,    18,    18,    85,    86,    87,    88,
+      89,    23,   164,   165,   166,    15,    15,    15,    18,    18,
+      18,    22,     9,    24,    18,    22,    22,    24,    24,    22,
+      22,    24,    24,    22,    22,    24,    24,    22,     9,    24,
+      16,    17,     9,    24,     9,    24,    24,    11,    16,     4,
+      16,    10,     3,    16,    16,     9,    33,    32,    28,     9,
+       9,    22,    22,    84,    22,    22,    22,     9,   183,    -1,
+      23,    15,    24,     9,    22,    22,     9,    -1,    -1,    24,
+      23,     9,    23,    29,    24,    23,    23,    26,    -1,    24,
+      24,    23,    23,    23,    23,    22,    18,    16,    23,     9,
+      24,    16,    23,    16,    16,    16,    23,    23,    22,    16,
+      16,    31,    16,    22,    22,    16,    16,    -1,    23,    22,
+      16,    23,    -1,    22,    22,    22,     7,    22,    -1,    23,
+      23,    23,    23,    23,    23,    23,    22,    -1,    23,    23,
+      23
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     1,     6,     9,    35,    36,    40,    41,    42,    43,
-      44,    46,    47,    48,    49,    50,    51,    52,    53,    24,
-       9,     9,    13,    15,    18,    19,    22,    25,    27,    31,
-      32,    33,    37,    38,     0,    36,    24,    24,    24,    24,
-      15,    18,     3,     4,     9,    16,    24,    43,    46,     3,
-       4,     9,    10,    11,    12,    18,     4,     9,    18,    23,
-      18,     4,     9,    18,    24,     9,     3,     4,     9,    10,
-      11,    24,    24,     9,    16,     3,     4,    10,    11,    16,
-      22,     9,    24,    46,    16,    24,    16,    28,    29,     4,
-       9,     4,     9,     9,     4,     9,     4,     9,    37,    38,
-      38,    38,    38,    38,    16,    17,    22,    24,     9,    22,
-      39,    23,    18,     9,    43,    24,    22,    24,    46,    22,
-      28,    29,    15,    24,     9,    23,    26,    23,    22,    18,
-      16,     9,    16,    45,    23,    16,    45,    24,    23,    46,
-      46,    16,    46,    16,    39,    23,    22,    31,    22,    16,
-      22,    16,    16,    45,    16,    16,    16,    22,    24,    23,
-      23,    22,    23,    22,    22,    16,    22,    22,    23,    23,
-      23,    23,    22,    23,    23,    23
+       0,     1,     5,     6,     7,     8,     9,    35,    36,    40,
+      41,    42,    43,    44,    46,    47,    48,    49,    50,    51,
+      52,    53,    24,     9,    15,     9,    15,     9,    15,     9,
+      15,    13,    15,    18,    19,    22,    25,    27,    31,    32,
+      33,    37,    38,     0,    36,    24,    24,    24,    24,    15,
+      18,     9,    15,    18,     9,    15,    18,     9,    15,    18,
+       9,     3,     4,     9,    16,    24,    43,    46,     3,     4,
+       9,    10,    11,    12,    18,     4,     9,    18,    23,    18,
+       4,     9,    18,    24,     9,     3,     4,     9,    10,    11,
+      24,    24,     9,    16,    11,    16,     9,    16,     4,    16,
+       9,    16,    10,    16,     9,    16,     3,    16,    16,    22,
+       9,    24,    46,    16,    24,    16,    28,    29,     4,     9,
+       4,     9,     9,     4,     9,     4,     9,    37,    38,    38,
+      38,    38,    38,    16,    17,    22,    24,    22,    16,    17,
+      22,    24,    22,    16,    17,    22,    24,    22,    16,    17,
+      22,    24,    22,     9,    39,    23,    18,     9,    43,    24,
+      22,    24,    46,    22,    28,    29,    15,    24,     9,    23,
+      23,    24,     9,    23,    23,    24,     9,    23,    23,    24,
+       9,    23,    23,    26,    22,    18,    16,     9,    16,    45,
+      23,    16,    45,    24,    23,    46,    46,    16,    46,    16,
+      16,    16,    16,    39,    23,    22,    31,    22,    16,    22,
+      16,    16,    45,    16,    16,    16,    22,    24,    22,    24,
+      22,    24,    22,    24,    23,    23,    22,    23,    22,    22,
+      16,    22,    22,    23,    23,    23,    23,    23,    23,    23,
+      22,    23,    23,    23
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -766,8 +804,10 @@ static const yytype_int8 yyr1[] =
       43,    43,    43,    44,    45,    46,    46,    46,    46,    46,
       46,    46,    46,    46,    46,    46,    46,    47,    47,    47,
       47,    47,    47,    47,    48,    48,    49,    49,    50,    50,
-      50,    50,    50,    51,    51,    51,    52,    52,    53,    53,
-      53,    53,    53,    53
+      50,    50,    50,    50,    50,    50,    51,    51,    51,    52,
+      52,    53,    53,    53,    53,    53,    53,    53,    53,    53,
+      53,    53,    53,    53,    53,    53,    53,    53,    53,    53,
+      53,    53,    53,    53,    53
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -780,8 +820,10 @@ static const yytype_int8 yyr2[] =
        3,     3,     3,     3,     2,     4,     4,     4,     4,     4,
        4,     4,     4,     3,     3,     3,     3,    10,     9,     9,
        9,     8,     8,     8,     6,     5,     7,     6,     4,     4,
-       4,     4,     2,     6,     9,     9,     3,     1,     5,     8,
-       6,     6,     9,     6
+       4,     4,     2,     2,     2,     2,     6,     9,     9,     3,
+       1,     5,     8,     6,     6,     9,     6,     5,     8,     6,
+       6,     9,     6,     5,     8,     6,     6,     9,     6,     5,
+       8,     6,     6,     9,     6
 };
 
 
@@ -1249,313 +1291,445 @@ yyreduce:
   switch (yyn)
     {
   case 32: /* switch: IDENTIFICADOR PARA IDENTIFICADOR PARC switch_aux LLAVEA LLAVEC  */
-#line 128 "sintactico.y"
+#line 127 "sintactico.y"
                                                                                {printf("switch correcto\n");}
-#line 1255 "sintactico.tab.c"
-    break;
-
-  case 33: /* cin: IDENTIFICADOR cin_aux PUNTOCOMA  */
-#line 131 "sintactico.y"
-                                                {printf("cin ejecutado correctamente\n");}
-#line 1261 "sintactico.tab.c"
-    break;
-
-  case 34: /* cout: IDENTIFICADOR cout_aux PUNTOCOMA  */
-#line 134 "sintactico.y"
-                                                 {printf("cout ejecutado correctamente\n");}
-#line 1267 "sintactico.tab.c"
-    break;
-
-  case 35: /* asignacion: IDENTIFICADOR IGUAL NUMEROE  */
-#line 137 "sintactico.y"
-                                                 {printf(" Valor %d asignado coreectamente \n",(yyvsp[0].numero));}
-#line 1273 "sintactico.tab.c"
-    break;
-
-  case 36: /* asignacion: IDENTIFICADOR IGUAL IDENTIFICADOR  */
-#line 138 "sintactico.y"
-                                                    {printf("Linea aceptada\n");}
-#line 1279 "sintactico.tab.c"
-    break;
-
-  case 37: /* asignacion: IDENTIFICADOR IGUAL NUMEROR  */
-#line 139 "sintactico.y"
-                                                              {printf(" Valor %1.0f asignado coreectamente\n",(yyvsp[0].real));}
-#line 1285 "sintactico.tab.c"
-    break;
-
-  case 38: /* asignacion: IDENTIFICADOR IGUAL OPERATION  */
-#line 140 "sintactico.y"
-                                                       {printf("Valor de operacion asiganado correctamente\n");}
-#line 1291 "sintactico.tab.c"
-    break;
-
-  case 39: /* asignacion: IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE  */
-#line 141 "sintactico.y"
-                                                                         {printf("Valor de operacion asiganado correctamente\n");}
 #line 1297 "sintactico.tab.c"
     break;
 
-  case 40: /* asignacion: IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR  */
-#line 142 "sintactico.y"
-                                                                         {printf("Valor de operacion asiganado correctamente\n");}
+  case 33: /* cin: IDENTIFICADOR cin_aux PUNTOCOMA  */
+#line 130 "sintactico.y"
+                                                {printf("cin ejecutado correctamente\n");}
 #line 1303 "sintactico.tab.c"
     break;
 
-  case 41: /* asignacion: IDENTIFICADOR IGUAL CADENA  */
-#line 143 "sintactico.y"
-                                                    {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
+  case 34: /* cout: IDENTIFICADOR cout_aux PUNTOCOMA  */
+#line 133 "sintactico.y"
+                                                 {printf("cout ejecutado correctamente\n");}
 #line 1309 "sintactico.tab.c"
     break;
 
-  case 42: /* asignacion: IDENTIFICADOR IGUAL CHAR  */
-#line 144 "sintactico.y"
-                                                  {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
+  case 35: /* asignacion: IDENTIFICADOR IGUAL NUMEROE  */
+#line 136 "sintactico.y"
+                                                 {printf(" Valor %d asignado coreectamente \n",(yyvsp[0].numero));}
 #line 1315 "sintactico.tab.c"
     break;
 
-  case 43: /* incremento_decremento: IDENTIFICADOR INC_DEC PUNTOCOMA  */
-#line 147 "sintactico.y"
-                                                        {printf("Decremento/incremento exito\n");}
+  case 36: /* asignacion: IDENTIFICADOR IGUAL IDENTIFICADOR  */
+#line 137 "sintactico.y"
+                                                    {printf("Linea aceptada\n");}
 #line 1321 "sintactico.tab.c"
     break;
 
-  case 45: /* comparacion: IDENTIFICADOR IGUAL IGUAL IDENTIFICADOR  */
-#line 153 "sintactico.y"
-                                                        {printf("Comparacion Exitosa\n");}
+  case 37: /* asignacion: IDENTIFICADOR IGUAL NUMEROR  */
+#line 138 "sintactico.y"
+                                                              {printf(" Valor %1.0f asignado coreectamente\n",(yyvsp[0].real));}
 #line 1327 "sintactico.tab.c"
     break;
 
-  case 46: /* comparacion: IDENTIFICADOR IGUAL IGUAL NUMEROE  */
-#line 154 "sintactico.y"
-                                                   {printf("Comparacion Exitosa\n");}
+  case 38: /* asignacion: IDENTIFICADOR IGUAL OPERATION  */
+#line 139 "sintactico.y"
+                                                       {printf("Valor de operacion asiganado correctamente\n");}
 #line 1333 "sintactico.tab.c"
     break;
 
-  case 47: /* comparacion: IDENTIFICADOR MENOR IGUAL IDENTIFICADOR  */
-#line 155 "sintactico.y"
-                                                         {printf("Comparacion Exitosa\n");}
+  case 39: /* asignacion: IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE  */
+#line 140 "sintactico.y"
+                                                                         {printf("Valor de operacion asiganado correctamente\n");}
 #line 1339 "sintactico.tab.c"
     break;
 
-  case 48: /* comparacion: IDENTIFICADOR MENOR IGUAL NUMEROE  */
-#line 156 "sintactico.y"
-                                                   {printf("Comparacion Exitosa\n");}
+  case 40: /* asignacion: IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR  */
+#line 141 "sintactico.y"
+                                                                         {printf("Valor de operacion asiganado correctamente\n");}
 #line 1345 "sintactico.tab.c"
     break;
 
-  case 49: /* comparacion: IDENTIFICADOR MAYOR IGUAL IDENTIFICADOR  */
-#line 157 "sintactico.y"
-                                                         {printf("Comparacion Exitosa\n");}
+  case 41: /* asignacion: IDENTIFICADOR IGUAL CADENA  */
+#line 142 "sintactico.y"
+                                                    {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
 #line 1351 "sintactico.tab.c"
     break;
 
-  case 50: /* comparacion: IDENTIFICADOR MAYOR IGUAL NUMEROE  */
-#line 158 "sintactico.y"
-                                                   {printf("Comparacion Exitosa\n");}
+  case 42: /* asignacion: IDENTIFICADOR IGUAL CHAR  */
+#line 143 "sintactico.y"
+                                                  {printf("Valor %s asiganado correctamente\n", (yyvsp[0].texto));}
 #line 1357 "sintactico.tab.c"
     break;
 
-  case 51: /* comparacion: IDENTIFICADOR NO IGUAL IDENTIFICADOR  */
-#line 159 "sintactico.y"
-                                                      {printf("Comparacion Exitosa\n");}
+  case 43: /* incremento_decremento: IDENTIFICADOR INC_DEC PUNTOCOMA  */
+#line 146 "sintactico.y"
+                                                        {printf("Decremento/incremento exito\n");}
 #line 1363 "sintactico.tab.c"
     break;
 
-  case 52: /* comparacion: IDENTIFICADOR NO IGUAL NUMEROE  */
-#line 160 "sintactico.y"
-                                                {printf("Comparacion Exitosa\n");}
+  case 45: /* comparacion: IDENTIFICADOR IGUAL IGUAL IDENTIFICADOR  */
+#line 152 "sintactico.y"
+                                                        {printf("Comparacion Exitosa\n");}
 #line 1369 "sintactico.tab.c"
     break;
 
-  case 53: /* comparacion: IDENTIFICADOR MAYOR NUMEROE  */
-#line 161 "sintactico.y"
-                                             {printf("Comparacion Exitosa\n");}
+  case 46: /* comparacion: IDENTIFICADOR IGUAL IGUAL NUMEROE  */
+#line 153 "sintactico.y"
+                                                   {printf("Comparacion Exitosa\n");}
 #line 1375 "sintactico.tab.c"
     break;
 
-  case 54: /* comparacion: IDENTIFICADOR MAYOR IDENTIFICADOR  */
-#line 162 "sintactico.y"
-                                                   {printf("Comparacion Exitosa\n");}
+  case 47: /* comparacion: IDENTIFICADOR MENOR IGUAL IDENTIFICADOR  */
+#line 154 "sintactico.y"
+                                                         {printf("Comparacion Exitosa\n");}
 #line 1381 "sintactico.tab.c"
     break;
 
-  case 55: /* comparacion: IDENTIFICADOR MENOR NUMEROE  */
-#line 163 "sintactico.y"
-                                             {printf("Comparacion Exitosa\n");}
+  case 48: /* comparacion: IDENTIFICADOR MENOR IGUAL NUMEROE  */
+#line 155 "sintactico.y"
+                                                   {printf("Comparacion Exitosa\n");}
 #line 1387 "sintactico.tab.c"
     break;
 
-  case 56: /* comparacion: IDENTIFICADOR MENOR IDENTIFICADOR  */
-#line 164 "sintactico.y"
-                                                   {printf("Comparacion Exitosa\n");}
+  case 49: /* comparacion: IDENTIFICADOR MAYOR IGUAL IDENTIFICADOR  */
+#line 156 "sintactico.y"
+                                                         {printf("Comparacion Exitosa\n");}
 #line 1393 "sintactico.tab.c"
     break;
 
-  case 57: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
-#line 167 "sintactico.y"
-                                                                                                                            {printf("Ciclo for aceptado\n");}
+  case 50: /* comparacion: IDENTIFICADOR MAYOR IGUAL NUMEROE  */
+#line 157 "sintactico.y"
+                                                   {printf("Comparacion Exitosa\n");}
 #line 1399 "sintactico.tab.c"
     break;
 
-  case 58: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
-#line 168 "sintactico.y"
-                                                                                                                  {printf("Ciclo for aceptado\n");}
+  case 51: /* comparacion: IDENTIFICADOR NO IGUAL IDENTIFICADOR  */
+#line 158 "sintactico.y"
+                                                      {printf("Comparacion Exitosa\n");}
 #line 1405 "sintactico.tab.c"
     break;
 
-  case 59: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
-#line 169 "sintactico.y"
-                                                                                                                 {printf("Ciclo for aceptado\n");}
+  case 52: /* comparacion: IDENTIFICADOR NO IGUAL NUMEROE  */
+#line 159 "sintactico.y"
+                                                {printf("Comparacion Exitosa\n");}
 #line 1411 "sintactico.tab.c"
     break;
 
-  case 60: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  */
-#line 170 "sintactico.y"
-                                                                                                   {printf("Ciclo for aceptado\n");}
+  case 53: /* comparacion: IDENTIFICADOR MAYOR NUMEROE  */
+#line 160 "sintactico.y"
+                                             {printf("Comparacion Exitosa\n");}
 #line 1417 "sintactico.tab.c"
     break;
 
-  case 61: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA PUNTOCOMA asignacion PARC LLAVEA LLAVEC  */
-#line 171 "sintactico.y"
-                                                                                       {printf("Ciclo for aceptado\n");}
+  case 54: /* comparacion: IDENTIFICADOR MAYOR IDENTIFICADOR  */
+#line 161 "sintactico.y"
+                                                   {printf("Comparacion Exitosa\n");}
 #line 1423 "sintactico.tab.c"
     break;
 
-  case 62: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  */
-#line 172 "sintactico.y"
-                                                                                        {printf("Ciclo for aceptado\n");}
+  case 55: /* comparacion: IDENTIFICADOR MENOR NUMEROE  */
+#line 162 "sintactico.y"
+                                             {printf("Comparacion Exitosa\n");}
 #line 1429 "sintactico.tab.c"
     break;
 
-  case 63: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA PARC LLAVEA LLAVEC  */
-#line 173 "sintactico.y"
-                                                                                       {printf("Ciclo for aceptado\n");}
+  case 56: /* comparacion: IDENTIFICADOR MENOR IDENTIFICADOR  */
+#line 163 "sintactico.y"
+                                                   {printf("Comparacion Exitosa\n");}
 #line 1435 "sintactico.tab.c"
     break;
 
-  case 64: /* ciclo_while: IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC  */
-#line 176 "sintactico.y"
-                                                                  {printf("Instruccion Exitosa\n");}
+  case 57: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
+#line 166 "sintactico.y"
+                                                                                                                            {printf("Ciclo for aceptado\n");}
 #line 1441 "sintactico.tab.c"
     break;
 
-  case 65: /* ciclo_while: IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
-#line 177 "sintactico.y"
-                                                       {printf("Instruccion Exitosa\n");}
+  case 58: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
+#line 167 "sintactico.y"
+                                                                                                                  {printf("Ciclo for aceptado\n");}
 #line 1447 "sintactico.tab.c"
     break;
 
-  case 66: /* ciclo_dowhile: IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC  */
-#line 180 "sintactico.y"
-                                                                                {printf("Ciclo Do-While Exitoso\n");}
+  case 59: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA incremento_decremento_for PARC LLAVEA LLAVEC  */
+#line 168 "sintactico.y"
+                                                                                                                 {printf("Ciclo for aceptado\n");}
 #line 1453 "sintactico.tab.c"
     break;
 
-  case 67: /* ciclo_dowhile: IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC  */
-#line 181 "sintactico.y"
-                                                                     {printf("Ciclo Do- While Exitoso\n");}
+  case 60: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  */
+#line 169 "sintactico.y"
+                                                                                                   {printf("Ciclo for aceptado\n");}
 #line 1459 "sintactico.tab.c"
     break;
 
-  case 68: /* declaraciones: IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROE  */
-#line 184 "sintactico.y"
-                                                          {printf("Declaración exitosa NUMERO entero\n");}
+  case 61: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA PUNTOCOMA asignacion PARC LLAVEA LLAVEC  */
+#line 170 "sintactico.y"
+                                                                                       {printf("Ciclo for aceptado\n");}
 #line 1465 "sintactico.tab.c"
     break;
 
-  case 69: /* declaraciones: IDENTIFICADOR IDENTIFICADOR IGUAL NUMEROR  */
-#line 185 "sintactico.y"
-                                                           {printf("Declaración exitosa numero real\n");}
+  case 62: /* ciclo_for: IDENTIFICADOR PARA PUNTOCOMA comparacion PUNTOCOMA PARC LLAVEA LLAVEC  */
+#line 171 "sintactico.y"
+                                                                                        {printf("Ciclo for aceptado\n");}
 #line 1471 "sintactico.tab.c"
     break;
 
-  case 70: /* declaraciones: IDENTIFICADOR IDENTIFICADOR IGUAL CADENA  */
-#line 186 "sintactico.y"
-                                                          {printf("Declaración exitosa string\n");}
+  case 63: /* ciclo_for: IDENTIFICADOR PARA asignacion PUNTOCOMA PUNTOCOMA PARC LLAVEA LLAVEC  */
+#line 172 "sintactico.y"
+                                                                                       {printf("Ciclo for aceptado\n");}
 #line 1477 "sintactico.tab.c"
     break;
 
-  case 71: /* declaraciones: IDENTIFICADOR IDENTIFICADOR IGUAL CHAR  */
-#line 187 "sintactico.y"
-                                                        {printf("Declaración exitosa char\n");}
+  case 64: /* ciclo_while: IDENTIFICADOR PARA comparacion PARC LLAVEA LLAVEC  */
+#line 175 "sintactico.y"
+                                                                  {printf("Instruccion Exitosa\n");}
 #line 1483 "sintactico.tab.c"
     break;
 
-  case 72: /* declaraciones: INT_DATATYPE IDENTIFICADOR  */
-#line 188 "sintactico.y"
-                                            {vInt.push_back((yyvsp[0].texto));}
+  case 65: /* ciclo_while: IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
+#line 176 "sintactico.y"
+                                                       {printf("Instruccion Exitosa\n");}
 #line 1489 "sintactico.tab.c"
     break;
 
-  case 73: /* condicion_if: IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC  */
-#line 191 "sintactico.y"
-                                                                 {printf("Condicion if exitosa \n");}
+  case 66: /* ciclo_dowhile: IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC  */
+#line 179 "sintactico.y"
+                                                                                {printf("Ciclo Do-While Exitoso\n");}
 #line 1495 "sintactico.tab.c"
     break;
 
-  case 74: /* condicion_if: IDENTIFICADOR PARA comparacion PIPE PIPE comparacion PARC LLAVEA LLAVEC  */
-#line 192 "sintactico.y"
-                                                                                         {printf("Condicion if exitosa \n");}
+  case 67: /* ciclo_dowhile: IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC  */
+#line 180 "sintactico.y"
+                                                                     {printf("Ciclo Do- While Exitoso\n");}
 #line 1501 "sintactico.tab.c"
     break;
 
-  case 75: /* condicion_if: IDENTIFICADOR PARA comparacion AMPERSAND AMPERSAND comparacion PARC LLAVEA LLAVEC  */
-#line 193 "sintactico.y"
-                                                                                                   {printf("Condicion if exitosa \n");}
+  case 68: /* declaraciones: INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE  */
+#line 183 "sintactico.y"
+                                                         {printf("Declaración exitosa NUMERO entero\n");}
 #line 1507 "sintactico.tab.c"
     break;
 
-  case 76: /* sino_else: IDENTIFICADOR LLAVEA LLAVEC  */
-#line 196 "sintactico.y"
-                                            {printf("Else exitoso \n");}
+  case 69: /* declaraciones: FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR  */
+#line 184 "sintactico.y"
+                                                            {printf("Declaración exitosa numero real\n");}
 #line 1513 "sintactico.tab.c"
     break;
 
-  case 77: /* sino_else: IDENTIFICADOR  */
-#line 197 "sintactico.y"
-                                {printf("Else exitoso \n");}
+  case 70: /* declaraciones: STRING_DATATYPE IDENTIFICADOR IGUAL CADENA  */
+#line 185 "sintactico.y"
+                                                            {printf("Declaración exitosa string\n");}
 #line 1519 "sintactico.tab.c"
     break;
 
-  case 78: /* funcion: IDENTIFICADOR IDENTIFICADOR PARA PARC PUNTOCOMA  */
-#line 200 "sintactico.y"
-                                                                {printf("Funcion exitosa \n");}
+  case 71: /* declaraciones: CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR  */
+#line 186 "sintactico.y"
+                                                        {printf("Declaración exitosa char\n");}
 #line 1525 "sintactico.tab.c"
     break;
 
-  case 79: /* funcion: IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA  */
-#line 201 "sintactico.y"
-                                                                                                  {printf("Funcion exitosa \n");}
-#line 1531 "sintactico.tab.c"
-    break;
-
-  case 80: /* funcion: IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA  */
-#line 202 "sintactico.y"
-                                                                               {printf("Funcion exitosa \n");}
+  case 72: /* declaraciones: INT_DATATYPE IDENTIFICADOR  */
+#line 187 "sintactico.y"
+                                            {if (existVariable((yyvsp[0].texto))) {
+							printf("Error semantico, variable ya declarada");						
+						} else {
+							printf("variable declarada con exito!, int");
+							data.first=(yyvsp[0].texto); data.second="int";
+							variables.push_back(data);
+						} }
 #line 1537 "sintactico.tab.c"
     break;
 
-  case 81: /* funcion: IDENTIFICADOR IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
-#line 203 "sintactico.y"
-                                                                     {printf("Funcion exitosa \n");}
+  case 73: /* declaraciones: FLOAT_DATATYPE IDENTIFICADOR  */
+#line 194 "sintactico.y"
+                                              {}
 #line 1543 "sintactico.tab.c"
     break;
 
-  case 82: /* funcion: IDENTIFICADOR IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC  */
-#line 204 "sintactico.y"
-                                                                                                      {printf("Funcion exitosa \n");}
+  case 74: /* declaraciones: STRING_DATATYPE IDENTIFICADOR  */
+#line 195 "sintactico.y"
+                                               {}
 #line 1549 "sintactico.tab.c"
     break;
 
-  case 83: /* funcion: IDENTIFICADOR PARA IDENTIFICADOR PARC LLAVEA LLAVEC  */
-#line 205 "sintactico.y"
-                                                                     {printf("Funcion exitosa \n");}
+  case 75: /* declaraciones: CHAR_DATATYPE IDENTIFICADOR  */
+#line 196 "sintactico.y"
+                                             {}
 #line 1555 "sintactico.tab.c"
     break;
 
+  case 76: /* condicion_if: IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC  */
+#line 199 "sintactico.y"
+                                                                 {printf("Condicion if exitosa \n");}
+#line 1561 "sintactico.tab.c"
+    break;
 
-#line 1559 "sintactico.tab.c"
+  case 77: /* condicion_if: IDENTIFICADOR PARA comparacion PIPE PIPE comparacion PARC LLAVEA LLAVEC  */
+#line 200 "sintactico.y"
+                                                                                         {printf("Condicion if exitosa \n");}
+#line 1567 "sintactico.tab.c"
+    break;
+
+  case 78: /* condicion_if: IDENTIFICADOR PARA comparacion AMPERSAND AMPERSAND comparacion PARC LLAVEA LLAVEC  */
+#line 201 "sintactico.y"
+                                                                                                   {printf("Condicion if exitosa \n");}
+#line 1573 "sintactico.tab.c"
+    break;
+
+  case 79: /* sino_else: IDENTIFICADOR LLAVEA LLAVEC  */
+#line 204 "sintactico.y"
+                                            {printf("Else exitoso \n");}
+#line 1579 "sintactico.tab.c"
+    break;
+
+  case 80: /* sino_else: IDENTIFICADOR  */
+#line 205 "sintactico.y"
+                                {printf("Else exitoso \n");}
+#line 1585 "sintactico.tab.c"
+    break;
+
+  case 81: /* funcion: INT_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA  */
+#line 208 "sintactico.y"
+                                                               {printf("Funcion exitosa \n");}
+#line 1591 "sintactico.tab.c"
+    break;
+
+  case 82: /* funcion: INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 209 "sintactico.y"
+                                                                                                 {printf("Funcion exitosa \n");}
+#line 1597 "sintactico.tab.c"
+    break;
+
+  case 83: /* funcion: INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 210 "sintactico.y"
+                                                                              {printf("Funcion exitosa \n");}
+#line 1603 "sintactico.tab.c"
+    break;
+
+  case 84: /* funcion: INT_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
+#line 211 "sintactico.y"
+                                                                    {printf("Funcion exitosa \n");}
+#line 1609 "sintactico.tab.c"
+    break;
+
+  case 85: /* funcion: INT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 212 "sintactico.y"
+                                                                                                     {printf("Funcion exitosa \n");}
+#line 1615 "sintactico.tab.c"
+    break;
+
+  case 86: /* funcion: INT_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 213 "sintactico.y"
+                                                                    {printf("Funcion exitosa \n");}
+#line 1621 "sintactico.tab.c"
+    break;
+
+  case 87: /* funcion: FLOAT_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA  */
+#line 214 "sintactico.y"
+                                                                  {printf("Funcion exitosa \n");}
+#line 1627 "sintactico.tab.c"
+    break;
+
+  case 88: /* funcion: FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 215 "sintactico.y"
+                                                                                                   {printf("Funcion exitosa \n");}
+#line 1633 "sintactico.tab.c"
+    break;
+
+  case 89: /* funcion: FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 216 "sintactico.y"
+                                                                                {printf("Funcion exitosa \n");}
+#line 1639 "sintactico.tab.c"
+    break;
+
+  case 90: /* funcion: FLOAT_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
+#line 217 "sintactico.y"
+                                                                      {printf("Funcion exitosa \n");}
+#line 1645 "sintactico.tab.c"
+    break;
+
+  case 91: /* funcion: FLOAT_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 218 "sintactico.y"
+                                                                                                       {printf("Funcion exitosa \n");}
+#line 1651 "sintactico.tab.c"
+    break;
+
+  case 92: /* funcion: FLOAT_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 219 "sintactico.y"
+                                                                      {printf("Funcion exitosa \n");}
+#line 1657 "sintactico.tab.c"
+    break;
+
+  case 93: /* funcion: STRING_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA  */
+#line 220 "sintactico.y"
+                                                                   {printf("Funcion exitosa \n");}
+#line 1663 "sintactico.tab.c"
+    break;
+
+  case 94: /* funcion: STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 221 "sintactico.y"
+                                                                                                    {printf("Funcion exitosa \n");}
+#line 1669 "sintactico.tab.c"
+    break;
+
+  case 95: /* funcion: STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 222 "sintactico.y"
+                                                                                 {printf("Funcion exitosa \n");}
+#line 1675 "sintactico.tab.c"
+    break;
+
+  case 96: /* funcion: STRING_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
+#line 223 "sintactico.y"
+                                                                       {printf("Funcion exitosa \n");}
+#line 1681 "sintactico.tab.c"
+    break;
+
+  case 97: /* funcion: STRING_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 224 "sintactico.y"
+                                                                                                        {printf("Funcion exitosa \n");}
+#line 1687 "sintactico.tab.c"
+    break;
+
+  case 98: /* funcion: STRING_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 225 "sintactico.y"
+                                                                       {printf("Funcion exitosa \n");}
+#line 1693 "sintactico.tab.c"
+    break;
+
+  case 99: /* funcion: CHAR_DATATYPE IDENTIFICADOR PARA PARC PUNTOCOMA  */
+#line 226 "sintactico.y"
+                                                                 {printf("Funcion exitosa \n");}
+#line 1699 "sintactico.tab.c"
+    break;
+
+  case 100: /* funcion: CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 227 "sintactico.y"
+                                                                                                  {printf("Funcion exitosa \n");}
+#line 1705 "sintactico.tab.c"
+    break;
+
+  case 101: /* funcion: CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR PARC PUNTOCOMA  */
+#line 228 "sintactico.y"
+                                                                               {printf("Funcion exitosa \n");}
+#line 1711 "sintactico.tab.c"
+    break;
+
+  case 102: /* funcion: CHAR_DATATYPE IDENTIFICADOR PARA PARC LLAVEA LLAVEC  */
+#line 229 "sintactico.y"
+                                                                     {printf("Funcion exitosa \n");}
+#line 1717 "sintactico.tab.c"
+    break;
+
+  case 103: /* funcion: CHAR_DATATYPE IDENTIFICADOR PARA IDENTIFICADOR COMA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 230 "sintactico.y"
+                                                                                                      {printf("Funcion exitosa \n");}
+#line 1723 "sintactico.tab.c"
+    break;
+
+  case 104: /* funcion: CHAR_DATATYPE PARA IDENTIFICADOR PARC LLAVEA LLAVEC  */
+#line 231 "sintactico.y"
+                                                                     {printf("Funcion exitosa \n");}
+#line 1729 "sintactico.tab.c"
+    break;
+
+
+#line 1733 "sintactico.tab.c"
 
       default: break;
     }
@@ -1749,7 +1923,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 208 "sintactico.y"
+#line 234 "sintactico.y"
 
 /**********************
  * Codigo C Adicional *
@@ -1758,11 +1932,16 @@ void yyerror(char *s)
 {
 	printf("Error sintactico %s \n",s);
 }
-void printList(){
-    std::list<std::string>::iterator it = vInt.begin();
-    while(it!= vInt.end()){
-        std::cout<<"\t"<< *it++<<std::endl;
-    }
+
+bool existVariable(std::string e) {
+	std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
+	while (it!=variables.end()) {
+		if (it->first == e) {
+			return true;		
+		}
+		it++;
+	}
+	return false;
 }
 
 int main(int argc,char **argv)
@@ -1777,6 +1956,5 @@ int main(int argc,char **argv)
 		
 
 	yyparse();
-	printList();
 	return 0;
 }
