@@ -1,12 +1,13 @@
 %{
-
+    
   #include <stdio.h>
   #include <stdlib.h>
   #include <iostream>
   #include <math.h>
   #include <list>
-  #include "string.h"
+  #include <string.h>
   #include <utility>
+  #include <sstream>
   #include <string>
   extern "C" int yylex(void);
   extern char *yytext;
@@ -15,6 +16,7 @@
   void yyerror(char *s);
 
   bool existVariable(std::string);
+  std::string getDataType(std::string);
 
   std::list<std::pair<std::string, std::string>> variables;
   std::pair<std::string, std::string> data;
@@ -44,21 +46,21 @@
 %token <texto>OPERATION
 %token <texto>EQUALARITHMETIC_OPERATORS
 %token <texto>ARITHMETIC_OPERATOR
-%token PARA
-%token PARC
-%token COMA
-%token IGUAL
-%token MAYOR
-%token CORCHA
-%token CORCHC
-%token LLAVEA
-%token LLAVEC
-%token PUNTOCOMA
-%token NO
-%token DOSPUNTOS
-%token MENOR
-%token PIPE
-%token AMPERSAND
+%token <texto>PARA
+%token <texto>PARC
+%token <texto>COMA
+%token <caracter>IGUAL
+%token <texto>MAYOR
+%token <texto>CORCHA
+%token <texto>CORCHC
+%token <texto>LLAVEA
+%token <texto>LLAVEC
+%token <texto>PUNTOCOMA
+%token <texto>NO
+%token <texto>DOSPUNTOS
+%token <texto>MENOR
+%token <texto>PIPE
+%token <texto>AMPERSAND
 %token <texto>OPERATOR
 %token <texto>INC_DEC
 %token <texto>OPERATOR_FLUJO_IN
@@ -133,7 +135,10 @@ cin: 		IDENTIFICADOR cin_aux PUNTOCOMA {printf("cin ejecutado correctamente\n");
 cout: 		IDENTIFICADOR cout_aux PUNTOCOMA {printf("cout ejecutado correctamente\n");}
 		;
 
-asignacion:	    IDENTIFICADOR IGUAL NUMEROE  {printf(" Valor %d asignado coreectamente \n",$3);}
+asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1, datatype[10]; std::stringstream ss; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {datatype[i]=buff[i];datatype[i+1]='\0';aux+=buff[i];}
+						 if (getDataType(aux) == "int") {printf("Asignacion correcta");} else {printf("Error, variable no declarada o tipo de dato incorrecto");}
+						}
                 |IDENTIFICADOR  IGUAL IDENTIFICADOR {printf("Linea aceptada\n");}
 				|IDENTIFICADOR IGUAL NUMEROR  {printf(" Valor %1.0f asignado coreectamente\n",$3);}
 			|IDENTIFICADOR IGUAL OPERATION {printf("Valor de operacion asiganado correctamente\n");}
@@ -180,20 +185,76 @@ ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC 
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
                 
-declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {printf("Declaración exitosa NUMERO entero\n");}
-		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {printf("Declaración exitosa numero real\n");}
-		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {printf("Declaración exitosa string\n");}
-		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {printf("Declaración exitosa char\n");}
-		|INT_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
-							printf("Error semantico, variable ya declarada\n");						
-						} else {
-							printf("variable declarada con exito!, int\n");
-							data.first=$2; data.second="int";
-							variables.push_back(data);
-						} }
-		|FLOAT_DATATYPE IDENTIFICADOR {}
-		|STRING_DATATYPE IDENTIFICADOR {}
-		|CHAR_DATATYPE IDENTIFICADOR {}
+declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {if (existVariable($2)) {
+                                                            printf("Error semantico, variable ya declarada\n");			
+                                                            } 
+                                                        else {
+                                                            printf("variable declarada con exito!, int\n");
+                                                            data.first=$2; data.second="int";
+                                                            variables.push_back(data);
+                                                            } 
+                                                        printf("%s",$2);
+                                                        }
+		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {if (existVariable($2)) {
+                                                        printf("Error semantico, variable ya declarada\n");			
+                                                        } 
+                                                    else {
+                                                        printf("variable declarada con exito!, float\n");
+                                                        data.first=$2; data.second="float";
+                                                        variables.push_back(data);
+                                                        } 
+                                                    }
+		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {if (existVariable($2)) {
+                                                        printf("Error semantico, variable ya declarada\n");			
+                                                        } 
+                                                    else {
+                                                        printf("variable declarada con exito!, string\n");
+                                                        data.first=$2; data.second="string";
+                                                        variables.push_back(data);
+                                                        } 
+                                                    }
+		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {if (existVariable($2)) {
+                                                    printf("Error semantico, variable ya declarada\n");			
+                                                    } 
+                                                else {
+                                                    printf("variable declarada con exito!, char\n");
+                                                    data.first=$2; data.second="char";
+                                                    variables.push_back(data);
+                                                    } 
+                                                }
+		|INT_DATATYPE IDENTIFICADOR { if (existVariable($2)) {
+                                        printf("Error semantico, variable ya declarada\n");			
+                                        } 
+                                      else {
+                                        printf("variable declarada con exito!, int\n");
+                                        data.first=$2; data.second="int"; data.first.pop_back();
+                                        variables.push_back(data);
+                                        } 
+                                    }
+		|FLOAT_DATATYPE IDENTIFICADOR {if (existVariable($2)) { 
+                                        printf("Error semantico, variable ya declarada\n");			
+                                        } 
+                                      else {
+                                        printf("variable declarada con exito!, float\n");
+                                        data.first=$2; data.second="float";
+                                        variables.push_back(data);
+                                        } }
+		|STRING_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
+                                        printf("Error semantico, variable ya declarada\n");			
+                                        } 
+                                      else {
+                                        printf("variable declarada con exito!, string\n");
+                                        data.first=$2; data.second="string";
+                                        variables.push_back(data);
+                                        } }
+		|CHAR_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
+                                        printf("Error semantico, variable ya declarada\n");			
+                                        } 
+                                      else {
+                                        printf("variable declarada con exito!, char\n");
+                                        data.first=$2; data.second="char";
+                                        variables.push_back(data);
+                                        } }
 	;
 	
 condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}
@@ -250,7 +311,16 @@ bool existVariable(std::string e) {
 	}
 	return false;
 }
-
+std::string getDataType(std::string nVariable){
+    std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
+	while (it!=variables.end()) {
+		if (it->first == nVariable) {
+			return it->second;		
+		}
+		it++;
+	}
+	return "no encontrado";
+}
 int main(int argc,char **argv)
 {
 	
