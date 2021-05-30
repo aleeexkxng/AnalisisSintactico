@@ -135,17 +135,82 @@ cin: 		IDENTIFICADOR cin_aux PUNTOCOMA {printf("cin ejecutado correctamente\n");
 cout: 		IDENTIFICADOR cout_aux PUNTOCOMA {printf("cout ejecutado correctamente\n");}
 		;
 
-asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1, datatype[10]; std::stringstream ss; std::string aux("");
-						 for(int i(0); buff[i]!='=';++i) {datatype[i]=buff[i];datatype[i+1]='\0';aux+=buff[i];}
-						 if (getDataType(aux) == "int") {printf("Asignacion correcta");} else {printf("Error, variable no declarada o tipo de dato incorrecto");}
+asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+						 if (getDataType(aux) == "int") {
+                            printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
 						}
-                |IDENTIFICADOR  IGUAL IDENTIFICADOR {printf("Linea aceptada\n");}
-				|IDENTIFICADOR IGUAL NUMEROR  {printf(" Valor %1.0f asignado coreectamente\n",$3);}
-			|IDENTIFICADOR IGUAL OPERATION {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR {printf("Valor de operacion asiganado correctamente\n");}
-			|IDENTIFICADOR IGUAL CADENA {printf("Valor %s asiganado correctamente\n", $3);}
-			|IDENTIFICADOR IGUAL CHAR {printf("Valor %s asiganado correctamente\n", $3);}
+                |IDENTIFICADOR  IGUAL IDENTIFICADOR {char* buff=$1;int i; std::string aux(""),aux2("");
+						 for(i =0; buff[i]!='=';++i) {aux+=buff[i];}
+                        i++;
+                        for(; buff[i]!='\0';++i) {aux2+=buff[i];}
+						 if (getDataType(aux) == getDataType(aux2)) {
+                            printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+                
+                
+                }
+				|IDENTIFICADOR IGUAL NUMEROR  {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                            if (getDataType(aux) == "float") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
+			|IDENTIFICADOR IGUAL OPERATION {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                            if (getDataType(aux) == "float"|| getDataType(aux)=="int") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
+			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='+';++i) {aux+=buff[i];}
+                            if (getDataType(aux)=="int") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
+			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='+';++i) {aux+=buff[i];}
+                            if (getDataType(aux)=="float") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
+			|IDENTIFICADOR IGUAL CADENA{char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                            if (getDataType(aux)=="string") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
+			|IDENTIFICADOR IGUAL CHAR {char* buff=$1; std::string aux("");
+						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                            if (getDataType(aux)=="char") {
+                                printf("Asignacion correcta");
+                            } 
+						 else {
+                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            }
+						}
 			;
 
 incremento_decremento:	IDENTIFICADOR INC_DEC PUNTOCOMA {printf("Decremento/incremento exito\n");}
@@ -185,76 +250,92 @@ ciclo_dowhile:  IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA comparacion PARC 
                 |IDENTIFICADOR LLAVEA LLAVEC IDENTIFICADOR PARA PARC {printf("Ciclo Do- While Exitoso\n");}
                 ;
                 
-declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {if (existVariable($2)) {
+declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::string aux("");
+                                                        for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                                                        if (existVariable(aux)) {
                                                             printf("Error semantico, variable ya declarada\n");			
                                                             } 
                                                         else {
                                                             printf("variable declarada con exito!, int\n");
-                                                            data.first=$2; data.second="int";
+                                                            data.first=aux; data.second="int";
                                                             variables.push_back(data);
-                                                            } 
-                                                        printf("%s",$2);
+                                                            }
                                                         }
-		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {if (existVariable($2)) {
-                                                        printf("Error semantico, variable ya declarada\n");			
-                                                        } 
-                                                    else {
-                                                        printf("variable declarada con exito!, float\n");
-                                                        data.first=$2; data.second="float";
-                                                        variables.push_back(data);
-                                                        } 
+		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {char* buff=$2; std::string aux("");
+                                                        for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                                                        if (existVariable(aux)) {
+                                                            printf("Error semantico, variable ya declarada\n");			
+                                                            } 
+                                                        else {
+                                                            printf("variable declarada con exito!, float\n");
+                                                            data.first=aux; data.second="float";
+                                                            variables.push_back(data);
+                                                            }
                                                     }
-		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {if (existVariable($2)) {
-                                                        printf("Error semantico, variable ya declarada\n");			
-                                                        } 
-                                                    else {
-                                                        printf("variable declarada con exito!, string\n");
-                                                        data.first=$2; data.second="string";
-                                                        variables.push_back(data);
-                                                        } 
+		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {char* buff=$2; std::string aux("");
+                                                        for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                                                        if (existVariable(aux)) {
+                                                            printf("Error semantico, variable ya declarada\n");			
+                                                            } 
+                                                        else {
+                                                            printf("variable declarada con exito!, string\n");
+                                                            data.first=aux; data.second="string";;
+                                                            variables.push_back(data);
+                                                            }
                                                     }
-		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {if (existVariable($2)) {
-                                                    printf("Error semantico, variable ya declarada\n");			
-                                                    } 
-                                                else {
-                                                    printf("variable declarada con exito!, char\n");
-                                                    data.first=$2; data.second="char";
-                                                    variables.push_back(data);
-                                                    } 
+		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {char* buff=$2; std::string aux("");
+                                                        for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
+                                                        if (existVariable(aux)) {
+                                                            printf("Error semantico, variable ya declarada\n");			
+                                                            } 
+                                                        else {
+                                                            printf("variable declarada con exito!, char\n");
+                                                            data.first=aux; data.second="char";
+                                                            variables.push_back(data);
+                                                            }
                                                 }
-		|INT_DATATYPE IDENTIFICADOR { if (existVariable($2)) {
+		|INT_DATATYPE IDENTIFICADOR { char* buff=$2; std::string aux("");
+                                        for(int i(0); buff[i]!=';';++i) {aux+=buff[i];}
+                                        if (existVariable(aux)) {
                                         printf("Error semantico, variable ya declarada\n");			
                                         } 
                                       else {
                                         printf("variable declarada con exito!, int\n");
-                                        data.first=$2; data.second="int"; data.first.pop_back();
+                                        data.first=aux; data.second="int";
                                         variables.push_back(data);
                                         } 
                                     }
-		|FLOAT_DATATYPE IDENTIFICADOR {if (existVariable($2)) { 
+		|FLOAT_DATATYPE IDENTIFICADOR {char* buff=$2; std::string aux("");
+                                        for(int i(0); buff[i]!=';';++i) {aux+=buff[i];}
+                                        if (existVariable(aux)) {
                                         printf("Error semantico, variable ya declarada\n");			
                                         } 
                                       else {
                                         printf("variable declarada con exito!, float\n");
-                                        data.first=$2; data.second="float";
+                                        data.first=aux; data.second="float";
                                         variables.push_back(data);
-                                        } }
-		|STRING_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
+                                        }  }
+		|STRING_DATATYPE IDENTIFICADOR {
+                                        char* buff=$2; std::string aux("");
+                                        for(int i(0); buff[i]!=';';++i) {aux+=buff[i];}
+                                        if (existVariable(aux)) {
                                         printf("Error semantico, variable ya declarada\n");			
                                         } 
                                       else {
                                         printf("variable declarada con exito!, string\n");
-                                        data.first=$2; data.second="string";
+                                        data.first=aux; data.second="string";
                                         variables.push_back(data);
                                         } }
-		|CHAR_DATATYPE IDENTIFICADOR {if (existVariable($2)) {
+		|CHAR_DATATYPE IDENTIFICADOR {char* buff=$2; std::string aux("");
+                                        for(int i(0); buff[i]!=';';++i) {aux+=buff[i];}
+                                        if (existVariable(aux)) {
                                         printf("Error semantico, variable ya declarada\n");			
                                         } 
                                       else {
                                         printf("variable declarada con exito!, char\n");
-                                        data.first=$2; data.second="char";
+                                        data.first=aux; data.second="char";
                                         variables.push_back(data);
-                                        } }
+                                        }  }
 	;
 	
 condicion_if:   IDENTIFICADOR PARA asignacion PARC LLAVEA LLAVEC {printf("Condicion if exitosa \n");}

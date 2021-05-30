@@ -1,3 +1,10 @@
+string hola;
 int equis;
-int equis;
+int de=9;
+float real;
+char c;
+equis=de;
+hola="cadenon";
+real=3.14;
+c='s';
 
