@@ -14,10 +14,11 @@
   extern int linea;
   extern FILE *yyin;
   void yyerror(char *s);
-
+  void printWarnings();
+  void setUsed(std::string);
   bool existVariable(std::string);
   std::string getDataType(std::string);
-
+  std::list<bool> usedVariables;
   std::list<std::pair<std::string, std::string>> variables;
   std::pair<std::string, std::string> data;
 %}
@@ -138,10 +139,10 @@ cout: 		IDENTIFICADOR cout_aux PUNTOCOMA {printf("cout ejecutado correctamente\n
 asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
 						 if (getDataType(aux) == "int") {
-                            printf("Asignacion correcta");
+                            printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
                 |IDENTIFICADOR  IGUAL IDENTIFICADOR {char* buff=$1;int i; std::string aux(""),aux2("");
@@ -149,10 +150,10 @@ asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1; std::string aux("");
                         i++;
                         for(; buff[i]!='\0';++i) {aux2+=buff[i];}
 						 if (getDataType(aux) == getDataType(aux2)) {
-                            printf("Asignacion correcta");
+                            printf("Asignacion correcta\n");setUsed(aux);setUsed(aux2);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);setUsed(aux2);
                             }
                 
                 
@@ -160,55 +161,55 @@ asignacion:	    IDENTIFICADOR IGUAL NUMEROE {char* buff=$1; std::string aux("");
 				|IDENTIFICADOR IGUAL NUMEROR  {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
                             if (getDataType(aux) == "float") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			|IDENTIFICADOR IGUAL OPERATION {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
                             if (getDataType(aux) == "float"|| getDataType(aux)=="int") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROE {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='+';++i) {aux+=buff[i];}
                             if (getDataType(aux)=="int") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			|IDENTIFICADOR EQUALARITHMETIC_OPERATORS NUMEROR {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='+';++i) {aux+=buff[i];}
                             if (getDataType(aux)=="float") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			|IDENTIFICADOR IGUAL CADENA{char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
                             if (getDataType(aux)=="string") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			|IDENTIFICADOR IGUAL CHAR {char* buff=$1; std::string aux("");
 						 for(int i(0); buff[i]!='=';++i) {aux+=buff[i];}
                             if (getDataType(aux)=="char") {
-                                printf("Asignacion correcta");
+                                printf("Asignacion correcta\n");setUsed(aux);
                             } 
 						 else {
-                            printf("Error, variable no declarada o tipo de dato incorrecto");
+                            printf("Error, variable no declarada o tipo de dato incorrecto\n");setUsed(aux);
                             }
 						}
 			;
@@ -259,6 +260,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                                             printf("variable declarada con exito!, int\n");
                                                             data.first=aux; data.second="int";
                                                             variables.push_back(data);
+                                                            usedVariables.push_back(false);
                                                             }
                                                         }
 		|FLOAT_DATATYPE IDENTIFICADOR IGUAL NUMEROR {char* buff=$2; std::string aux("");
@@ -270,6 +272,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                                             printf("variable declarada con exito!, float\n");
                                                             data.first=aux; data.second="float";
                                                             variables.push_back(data);
+       							    usedVariables.push_back(false);	
                                                             }
                                                     }
 		|STRING_DATATYPE IDENTIFICADOR IGUAL CADENA {char* buff=$2; std::string aux("");
@@ -280,7 +283,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                                         else {
                                                             printf("variable declarada con exito!, string\n");
                                                             data.first=aux; data.second="string";;
-                                                            variables.push_back(data);
+                                                            variables.push_back(data);usedVariables.push_back(false);
                                                             }
                                                     }
 		|CHAR_DATATYPE IDENTIFICADOR IGUAL CHAR {char* buff=$2; std::string aux("");
@@ -291,7 +294,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                                         else {
                                                             printf("variable declarada con exito!, char\n");
                                                             data.first=aux; data.second="char";
-                                                            variables.push_back(data);
+                                                            variables.push_back(data);usedVariables.push_back(false);
                                                             }
                                                 }
 		|INT_DATATYPE IDENTIFICADOR { char* buff=$2; std::string aux("");
@@ -302,7 +305,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                       else {
                                         printf("variable declarada con exito!, int\n");
                                         data.first=aux; data.second="int";
-                                        variables.push_back(data);
+                                        variables.push_back(data);usedVariables.push_back(false);
                                         } 
                                     }
 		|FLOAT_DATATYPE IDENTIFICADOR {char* buff=$2; std::string aux("");
@@ -313,7 +316,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                       else {
                                         printf("variable declarada con exito!, float\n");
                                         data.first=aux; data.second="float";
-                                        variables.push_back(data);
+                                        variables.push_back(data);usedVariables.push_back(false);
                                         }  }
 		|STRING_DATATYPE IDENTIFICADOR {
                                         char* buff=$2; std::string aux("");
@@ -324,7 +327,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                       else {
                                         printf("variable declarada con exito!, string\n");
                                         data.first=aux; data.second="string";
-                                        variables.push_back(data);
+                                        variables.push_back(data);usedVariables.push_back(false);
                                         } }
 		|CHAR_DATATYPE IDENTIFICADOR {char* buff=$2; std::string aux("");
                                         for(int i(0); buff[i]!=';';++i) {aux+=buff[i];}
@@ -334,7 +337,7 @@ declaraciones:  INT_DATATYPE IDENTIFICADOR IGUAL NUMEROE {char* buff=$2; std::st
                                       else {
                                         printf("variable declarada con exito!, char\n");
                                         data.first=aux; data.second="char";
-                                        variables.push_back(data);
+                                        variables.push_back(data);usedVariables.push_back(false);
                                         }  }
 	;
 	
@@ -381,7 +384,26 @@ void yyerror(char *s)
 {
 	printf("Error sintactico %s \n",s);
 }
-
+void printWarnings() {
+	std::list<bool>::iterator itBool = usedVariables.begin();
+	std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
+	while (it!=variables.end()) {
+		if (*itBool==false) {
+			std::cout << "Unused variable -> " << it->first << std::endl;	
+		}
+		it++;itBool++;
+	}
+}
+void setUsed(std::string e){
+	std::list<bool>::iterator itBool = usedVariables.begin();
+	std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
+	while (it!=variables.end()) {
+		if (it->first == e) {
+			*itBool=true;	
+		}
+		it++;itBool++;
+	}
+}
 bool existVariable(std::string e) {
 	std::list<std::pair<std::string, std::string>>::iterator it = variables.begin();
 	while (it!=variables.end()) {
@@ -414,5 +436,6 @@ int main(int argc,char **argv)
 		
 
 	yyparse();
+	printWarnings();
 	return 0;
 }

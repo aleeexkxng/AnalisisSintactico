@@ -1,10 +1,8 @@
 string hola;
-int equis;
-int de=9;
-float real;
-char c;
-equis=de;
-hola="cadenon";
-real=3.14;
-c='s';
+int x;
+int y;
+string x;
+x=string;
+x="hola";
+hola=5;
 
